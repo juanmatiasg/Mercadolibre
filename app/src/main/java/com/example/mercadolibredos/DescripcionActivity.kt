@@ -30,12 +30,12 @@ class DescripcionActivity : AppCompatActivity() {
         var title:String? = bundle!!.getString("Title")
         var price:String? = bundle.getString("Price")
         var Image:String? = bundle.getString("Image")
-        //var Descripcion:String? = bundle.getString("Descripcion")
+       // var Descripcion:String? = bundle!!.getString("Descripcion")
 
         textViewTitleDescripcion.setText(title)
         textViewPriceDescripcion.setText(price)
         Picasso.get().load(Image).into(imageViewDescripcion)
-        //textViewDescripcion.setText(Descripcion)
+       // textViewDescripcion.setText(Descripcion)
 
 
 

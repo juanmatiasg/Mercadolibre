@@ -13,6 +13,7 @@ class Items(
     var thumbnail:String,
     @SerializedName("descriptions")
     var descriptions:ArrayList<Descripcion>
+        /*https://api.mercadolibre.com/items/MLA856812678/descriptions*/
 
 ) {
 

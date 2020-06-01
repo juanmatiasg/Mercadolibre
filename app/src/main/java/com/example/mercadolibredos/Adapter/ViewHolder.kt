@@ -27,21 +27,25 @@ class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     var photos = view.findViewById<ImageView>(R.id.imageView)
     var descripcion = view.findViewById<TextView>(R.id.textViewDescripcion)
 
-    fun bind(json: Items) {
+    var cardView = view.findViewById<CardView>(R.id.cardView)
 
+    fun bind(json: Items) {
         id.text = "ID: " + json.id
         title.text = "Title: " + json.title
         price.text = "Price: " + json.price.toString() + "$"
         photos.loadUrl(json.thumbnail)
-        //descripcion.text = json.descriptions.add(Descripcion("jaja")).toString()
 
-        itemView.setOnClickListener(object : View.OnClickListener {  /*itemsDeCardView*/
+        // descripcion = json.descriptions.get(ProductosAdapter)
+
+       cardView.setOnClickListener(object : View.OnClickListener {  /*Hago click en el cardView y me lleva a otra activity*/
+
             override fun onClick(v: View) {
                 var intent = Intent(v.context, DescripcionActivity::class.java)
                 intent.putExtra("Image", json.thumbnail)
                 intent.putExtra("Title", title.text.toString())
                 intent.putExtra("Price", price.text.toString())
-           //     intent.putExtra("Descripcion",json.descriptions.get(v.id).plain_text)
+
+               // intent.putExtra("Descripcion",json.descriptions.get(v.id).plain_text)
 
                 /*Pasar los datos extra a Bundle a la clase DescripcionActivity*/
 

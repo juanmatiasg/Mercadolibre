@@ -20,7 +20,7 @@ import java.io.Serializable
 
 
 class ProductosAdapter() : RecyclerView.Adapter<ViewHolder>() {
-
+    lateinit var descripcion: Descripcion
     var lista: MutableList<Items> = mutableListOf()
     lateinit var context: Context
 
