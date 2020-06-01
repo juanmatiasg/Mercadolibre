@@ -10,7 +10,10 @@ class Items(
     @SerializedName("price")
     var price:Double,
     @SerializedName("thumbnail")
-    var thumbnail:String
+    var thumbnail:String,
+    @SerializedName("descriptions")
+    var descriptions:ArrayList<Descripcion>
+
 ) {
 
 }

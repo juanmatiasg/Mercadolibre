@@ -8,5 +8,13 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="tema" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="SplashTheme" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/splashscreen</item>
+    </style>
+
 
 </resources>
