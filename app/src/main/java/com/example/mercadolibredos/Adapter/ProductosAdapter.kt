@@ -1,26 +1,18 @@
 package com.example.mercadolibredos.Adapter
 
 import android.content.Context
-import android.content.Intent
-import android.os.Parcel
-import android.os.Parcelable
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.example.mercadolibredos.DescripcionActivity
 import com.example.mercadolibredos.Modelo.Descripcion
 import com.example.mercadolibredos.Modelo.Items
 import com.example.mercadolibredos.R
-import org.w3c.dom.Text
-import java.io.Serializable
 
 
-class ProductosAdapter() : RecyclerView.Adapter<ViewHolder>() {
-    lateinit var descripcion: Descripcion
+class ProductosAdapter() : RecyclerView.Adapter<ViewHolder>(){
+
+
+   var listaDescripcion: ArrayList<Descripcion> = ArrayList()
     var lista: MutableList<Items> = mutableListOf()
     lateinit var context: Context
 
@@ -29,7 +21,9 @@ class ProductosAdapter() : RecyclerView.Adapter<ViewHolder>() {
         this.lista = lista
         this.context = context
     }
-
+    fun ProductosAdapter(listaDescripcion: ArrayList<Descripcion>) {
+        this.listaDescripcion = listaDescripcion
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         var layoutInflater = LayoutInflater.from(parent.context)
@@ -42,10 +36,12 @@ class ProductosAdapter() : RecyclerView.Adapter<ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         var item = lista.get(position)
-        holder.bind(item)
-
+        holder.bind(item,position)
 
     }
 
 
+
 }
+
+

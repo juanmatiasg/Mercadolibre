@@ -1,0 +1,153 @@
+● Como usuario quiero poder realizar una búsqueda en MercadoLibre
+ingresando en un campo de texto aquellos términos que me interesan
+
+1)Primero hay que usar el permiso de Internet en el Manifest porque sino no podemos usar El API de Mercadolibre
+
+<uses-permission android:name="android.permission.INTERNET" />
+
+2) Crear la Interfaz del API
+
+ @GET("sites/MLA/search?q=")  /*Se busca todos los productos*/
+ fun searching(@Query("q") q:String):Call<BaseProductos>
+
+3) Crear el modelo de la Clase 
+
+class BaseProductos(@SerializedName("query") var query: String, @SerializedName("results") var items: ArrayList<Items>) {
+
+}
+
+class Items(
+    @SerializedName("id")
+    var id:String,
+    @SerializedName("title")
+    var title:String,
+    @SerializedName("price")
+    var price:Double,
+    @SerializedName("thumbnail")
+    var thumbnail:String,
+    @SerializedName("descriptions")
+    var descriptions:ArrayList<Descripcion>
+
+) {
+}
+
+4) Crear un metodo del Retrofit
+
+private fun getRetrofit(): Retrofit {
+        return Retrofit.Builder()
+                .baseUrl("https://api.mercadolibre.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+
+   }
+
+5) Crear un metodo para buscar los productos que me interesa 
+
+private fun search(term: String) {
+        hideKeyboard() /*Oculta el teclado cuando lo busco*/
+
+        var service = getRetrofit().create(MercadoLibreApi::class.java)
+        service.searching(term).enqueue(object : Callback<BaseProductos> {
+            override fun onFailure(call: Call<BaseProductos>, t: Throwable) {
+                Toast.makeText(this@MainActivity, "No se han encontrado el Articulo", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onResponse(call: Call<BaseProductos>, response: Response<BaseProductos>) {
+                if (response.isSuccessful) {
+                    var productoRespuesta = response.body() as BaseProductos
+                    var lista = productoRespuesta.items
+
+                    mAdapter.ProductosAdapter(lista, this@MainActivity)
+                    mRecyclerView.adapter = mAdapter
+                }
+
+            }
+
+        })
+   }
+  
+6) funcion onCreate en donde se lanza la aplicacion
+
+	searchAction.setOnClickListener { search(searchText.text.toString()) } /*Metodo donde se ejecuta la busqueda  */
+	searchAction es el id del boton de la vista activity_main.xml 
+	search es el metodo en donde paso por parametro el searchText.text.toString() de la vista activity_main.xml
+
+
+● Como usuario quiero poder quiero poder visualizar un listado de Productos que se hayan encontrado al realizar una busqueda
+
+1) En la interfaz del Api creo un metodo 
+
+@GET("sites/MLA/search?q=articulos")  /*Obtiene Todos los Articulos*/
+ fun getAll():Call<BaseProductos>
+
+2) En el MainActivity creo una funcion para mostrar el listado de productos
+fun obtenerTodo() { 
+        var servicio = getRetrofit().create(MercadoLibreApi::class.java)
+        servicio.getAll().enqueue(object : Callback<BaseProductos> {
+            override fun onFailure(call: Call<BaseProductos>, t: Throwable) {
+                Toast.makeText(this@MainActivity, "No hay conexion", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onResponse(call: Call<BaseProductos>, response: Response<BaseProductos>) {
+                if (response.isSuccessful) {
+
+                    var productoRespuesta = response.body() as BaseProductos
+                    var lista = productoRespuesta.items
+
+                    mAdapter.ProductosAdapter(lista, this@MainActivity)
+                    mRecyclerView.adapter = mAdapter
+
+                }
+
+
+            }
+
+
+        })
+
+    }
+
+3) En la funcion OnCreate del MainActivity llamo a la funcion obtenerTodo()
+
+● Como usuario quiero poder visulizar el detalle de un Producto al clickear su item en el listado
+Dicho detalle debe incluir mas informacion que la mostrada en el listado.(Llegue hacer click al item, mostrar el title, price y thumbail 
+pero, me falta mostrar la descripcion)
+
+1)En la clase ViewHolder tuve crear una funcion de cardView
+
+ cardView.setOnClickListener(object : View.OnClickListener {  /*Hago click en el cardView y me lleva a otra activity*/
+
+            override fun onClick(v: View) {
+                var intent = Intent(v.context, DescripcionActivity::class.java)
+                intent.putExtra("Image", json.thumbnail)
+                intent.putExtra("Title", title.text.toString())
+                intent.putExtra("Price", price.text.toString())
+               // intent.putExtra("Descripcion",json.descriptions.get(position).plain_text) (Falta mostrar descripcion)
+  		
+		/*Pasar los datos extra a Bundle a la clase DescripcionActivity*/
+
+		v.context.startActivity(intent) /*otra Activity(Descripcion)*/
+
+2) En la clase DescripcionActivity obtengo los extraas de ViewHolder
+
+override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_descripcion)
+
+       var bundle:Bundle? = intent.extras
+
+        var title:String? = bundle!!.getString("Title")
+        var price:String? = bundle.getString("Price")
+        var Image:String? = bundle.getString("Image")
+       // var Descripcion:String? = bundle.getString("Descripcion") /*Falta la descripcion*/
+
+        textViewTitleDescripcion.setText(title)
+        textViewPriceDescripcion.setText(price)
+        Picasso.get().load(Image).into(imageViewDescripcion)
+        //textViewDescripcion.setText(Descripcion)/*Falta la descripcion*/
+
+
+
+    }
+
+
