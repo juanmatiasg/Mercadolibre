@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.media.Image
 import android.os.Parcelable
+import android.util.Log
 import android.view.View
 import android.widget.Adapter
 import android.widget.ImageView
@@ -12,6 +13,7 @@ import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mercadolibredos.DescripcionActivity
+import com.example.mercadolibredos.Interfaces.MercadoLibreApi
 import com.example.mercadolibredos.MainActivity
 import com.example.mercadolibredos.Modelo.Descripcion
 import com.example.mercadolibredos.Modelo.Items
@@ -20,6 +22,11 @@ import com.google.gson.Gson
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_descripcion.view.*
 import kotlinx.android.synthetic.main.item_productos.view.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.io.Serializable
 import java.text.FieldPosition
 
@@ -46,7 +53,7 @@ class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
                 intent.putExtra("Image", json.thumbnail)
                 intent.putExtra("Title", title.text.toString())
                 intent.putExtra("Price", price.text.toString())
-              //  intent.putExtra("Descripcion",json.descriptions.get(position).id)
+                //intent.putExtra("Descripcion", json.descriptions.get(position).plain_text)
 
                 /*Pasar los datos extra a Bundle a la clase DescripcionActivity*/
 
@@ -55,17 +62,14 @@ class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             }
 
         })
-
-
     }
 
 
     fun ImageView.loadUrl(url:String){
         Picasso.get().load(url).into(imageView)
+
     }
 
-
-
-
 }
+
 

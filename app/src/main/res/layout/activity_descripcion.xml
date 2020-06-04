@@ -60,7 +60,7 @@
         android:layout_height="91dp"
         android:layout_marginTop="28dp"
         android:gravity="center"
-        android:text="Esto es una descripcion de motorola"
+        android:text="Esto es una descripcion del Producto"
         android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.491"

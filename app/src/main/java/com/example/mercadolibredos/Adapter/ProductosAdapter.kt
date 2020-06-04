@@ -9,10 +9,9 @@ import com.example.mercadolibredos.Modelo.Items
 import com.example.mercadolibredos.R
 
 
-class ProductosAdapter() : RecyclerView.Adapter<ViewHolder>(){
+class ProductosAdapter() : RecyclerView.Adapter<ViewHolder>() {
 
 
-   var listaDescripcion: ArrayList<Descripcion> = ArrayList()
     var lista: MutableList<Items> = mutableListOf()
     lateinit var context: Context
 
@@ -21,9 +20,7 @@ class ProductosAdapter() : RecyclerView.Adapter<ViewHolder>(){
         this.lista = lista
         this.context = context
     }
-    fun ProductosAdapter(listaDescripcion: ArrayList<Descripcion>) {
-        this.listaDescripcion = listaDescripcion
-    }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         var layoutInflater = LayoutInflater.from(parent.context)
@@ -36,10 +33,9 @@ class ProductosAdapter() : RecyclerView.Adapter<ViewHolder>(){
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         var item = lista.get(position)
-        holder.bind(item,position)
+        holder.bind(item, position)
 
     }
-
 
 
 }

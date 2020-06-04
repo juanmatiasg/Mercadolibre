@@ -13,18 +13,19 @@ import retrofit2.http.Query
 import kotlin.math.sign
 interface MercadoLibreApi {
 
- @GET("items/{id}/descriptions/plain_text")
- fun getAllDescriptions(@Path("id")id:String):Call<Descripcion>
 
 
- @GET("items/{id}")  /*se buscar un solo item*/
+ @GET("items/{id}")  /*se buscar un solo producto*/
  fun search(@Path("id")id:String):Call<Items>
 
  @GET("sites/MLA/search?q=articulos")  /*Obtiene Todos los Articulos*/
  fun getAll():Call<BaseProductos>
 
- @GET("sites/MLA/search?q=")  /*Correctisimo: Se busca todos los productos*/
+ @GET("sites/MLA/search?q=")  /*Se busca todos los productos*/
  fun searching(@Query("q") q:String):Call<BaseProductos>
+
+    @GET("items/{id}/descriptions/plain_text") /*Seguir intentando*/
+    fun getAllDescriptions(@Path("id")id:String):Call<Descripcion>
 
 
 

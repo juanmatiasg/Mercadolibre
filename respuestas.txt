@@ -41,7 +41,36 @@ private fun getRetrofit(): Retrofit {
 
    }
 
-5) Crear un metodo para buscar los productos que me interesa 
+5) Crear un metodo para buscar id del productos  
+
+fun buscarPorId(query: String) { /*Funciona*/
+        hideKeyboard() /*Oculto el teclado cuando busco por id*/
+        var service = getRetrofit().create(MercadoLibreApi::class.java)
+        service.search(query).enqueue(object : Callback<Items> {
+            override fun onFailure(call: Call<Items>, t: Throwable) {
+                Toast.makeText(this@MainActivity, "No hay conexion", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onResponse(call: Call<Items>, response: Response<Items>) {
+                if (response.isSuccessful) {
+                    var jsonRespuesta = response.body() as Items
+                    var lista: ArrayList<Items> = ArrayList()
+                    lista.add(jsonRespuesta)
+
+                    mAdapter.ProductosAdapter(lista, this@MainActivity)
+                    mRecyclerView.adapter = mAdapter
+
+
+                }
+
+            }
+
+
+        })
+
+    }
+
+6) Crear un metodo para buscar varios Productos que me interesa
 
 private fun search(term: String) {
         hideKeyboard() /*Oculta el teclado cuando lo busco*/
@@ -59,6 +88,7 @@ private fun search(term: String) {
 
                     mAdapter.ProductosAdapter(lista, this@MainActivity)
                     mRecyclerView.adapter = mAdapter
+		    buscarPorId(term) /*Llamo al metodo buscar por ID*/
                 }
 
             }

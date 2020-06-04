@@ -41,22 +41,17 @@ class MainActivity : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(R.style.AppTheme) /*setea el SplashScreen*/
-        Thread.sleep(3000) /*Tiempo de espera 3000 mili segundos*/
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         searchAction.setOnClickListener { search(searchText.text.toString()) } /*Metodo donde se ejecuta la busqueda  */
-        //searchAction.setOnClickListener { buscarPorId(searchText.text.toString()) } /*Metodo donde se ejecuta la busqueda de un solo item*/
         setUpRecyclerView()
         obtenerTodo()  /*Metodo que obtiene todos los Productoss del API*/
         //obtenerDescripcion()
 
     }
 
-    companion object {
-        var TAG: String = "POKEDEX"
-    }
+
 
 
     private fun getRetrofit(): Retrofit {
@@ -72,6 +67,9 @@ class MainActivity : AppCompatActivity() {
         mRecyclerView.setHasFixedSize(true)
         mRecyclerView.layoutManager = LinearLayoutManager(this)
 
+    }
+    companion object {
+        var TAG: String = "POKEDEX"
     }
 
     fun buscarPorId(query: String) { /*Funciona*/
@@ -91,16 +89,20 @@ class MainActivity : AppCompatActivity() {
                     mAdapter.ProductosAdapter(lista, this@MainActivity)
                     mRecyclerView.adapter = mAdapter
 
+
                 }
+
             }
+
 
         })
 
     }
 
-    fun obtenerDescripcion(query: String) { /*Funciona pero hay que buscar varios id*/
+
+    fun obtenerDescripcion() { /*Funciona pero hay que buscar varios id*/
         var service = getRetrofit().create(MercadoLibreApi::class.java)
-        service.getAllDescriptions(query).enqueue(object : Callback<Descripcion> {
+        service.getAllDescriptions("MLA855346850").enqueue(object : Callback<Descripcion> {
             override fun onFailure(call: Call<Descripcion>, t: Throwable) {
                 Log.i(TAG, "No hay datos")
             }
@@ -123,7 +125,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun obtenerTodo() { /*Correcto*/
+    fun obtenerTodo() { /*Funciona*/
 
         var servicio = getRetrofit().create(MercadoLibreApi::class.java)
         servicio.getAll().enqueue(object : Callback<BaseProductos> {
@@ -144,6 +146,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
 
+
             }
 
 
@@ -152,7 +155,9 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun search(term: String) {
+    private fun search(term: String) { /*Funciona*/
+
+
         hideKeyboard() /*Oculta el teclado cuando lo busco*/
 
         var service = getRetrofit().create(MercadoLibreApi::class.java)
@@ -169,11 +174,13 @@ class MainActivity : AppCompatActivity() {
 
                     mAdapter.ProductosAdapter(lista, this@MainActivity)
                     mRecyclerView.adapter = mAdapter
+                    buscarPorId(term) /*Llamo al metodo buscar por ID*/
 
                 }
 
 
             }
+
 
         })
 
