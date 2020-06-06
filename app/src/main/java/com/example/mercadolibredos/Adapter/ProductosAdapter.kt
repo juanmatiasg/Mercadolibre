@@ -1,5 +1,6 @@
 package com.example.mercadolibredos.Adapter
 
+import android.content.ComponentCallbacks
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,14 +8,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.mercadolibredos.Modelo.Descripcion
 import com.example.mercadolibredos.Modelo.Items
 import com.example.mercadolibredos.R
+import com.google.gson.Gson
 
 
-class ProductosAdapter() : RecyclerView.Adapter<ViewHolder>() {
-
+class ProductosAdapter: RecyclerView.Adapter<ViewHolder>() {
 
     var lista: MutableList<Items> = mutableListOf()
     lateinit var context: Context
-
 
     fun ProductosAdapter(lista: MutableList<Items>, context: Context) {
         this.lista = lista
@@ -33,9 +33,10 @@ class ProductosAdapter() : RecyclerView.Adapter<ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         var item = lista.get(position)
-        holder.bind(item, position)
-
+        holder.bind(item)
     }
+
+
 
 
 }

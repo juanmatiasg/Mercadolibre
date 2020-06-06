@@ -5,19 +5,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DescripcionActivity">
+    tools:context=".DescripcionActivity"
+    >
 
     <TextView
-
         android:id="@+id/textViewTitleDescripcion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:gravity="center"
+        android:layout_marginTop="24dp"
+        android:background="#FFC107"
+        android:padding="5dp"
         android:text="Titulo"
         android:textColor="#000000"
-        android:textStyle="bold"
-        android:textSize="26dp"
+        android:textSize="18dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,23 +29,24 @@
         android:id="@+id/textViewPriceDescripcion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="56dp"
         android:gravity="center"
         android:text="Price"
-        android:textSize="26dp"
+        android:textSize="16dp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewDescripcion"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toBottomOf="@+id/scrollView2"
+        app:layout_constraintVertical_bias="0.322"
+        android:textColor="#FFC107">
 
     </TextView>
 
     <ImageView
         android:id="@+id/imageViewDescripcion"
-        android:layout_width="match_parent"
-        android:layout_height="110dp"
+        android:layout_width="399dp"
+        android:layout_height="96dp"
         android:layout_marginTop="28dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -53,17 +54,30 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:mipmap/sym_def_app_icon" />
 
-    <TextView
 
-        android:id="@+id/textViewDescripcion"
-        android:layout_width="354dp"
-        android:layout_height="91dp"
-        android:layout_marginTop="28dp"
-        android:gravity="center"
-        android:text="Esto es una descripcion del Producto"
-        android:textSize="20dp"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="402dp"
+        android:layout_height="239dp"
+        android:layout_marginTop="12dp"
+        android:background="#DDDBD5"
+        android:padding="9dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTitleDescripcion" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewTitleDescripcion">
+
+
+        <TextView
+            android:id="@+id/textViewDescripcion"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:padding="18dp"
+            android:text="Esto es una descripcion del Producto"
+            android:textColor="#000000"
+            android:textSize="15dp"
+            tools:layout_editor_absoluteX="-16dp"
+            tools:layout_editor_absoluteY="305dp" />
+
+    </androidx.core.widget.NestedScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

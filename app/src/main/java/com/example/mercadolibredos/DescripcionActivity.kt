@@ -6,6 +6,9 @@ import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.get
+import androidx.recyclerview.widget.RecyclerView
+import com.example.mercadolibredos.Adapter.ProductosAdapter
 import com.example.mercadolibredos.Adapter.ViewHolder
 import com.example.mercadolibredos.Interfaces.MercadoLibreApi
 import com.example.mercadolibredos.Modelo.BaseProductos
@@ -25,7 +28,9 @@ import java.io.Serializable
 
 class DescripcionActivity : AppCompatActivity() {
 
-
+    lateinit var mRecyclerView: RecyclerView
+    var mAdapter: ProductosAdapter = ProductosAdapter()
+    lateinit var mViewHolder: ViewHolder
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_descripcion)
@@ -35,16 +40,18 @@ class DescripcionActivity : AppCompatActivity() {
         var title: String? = bundle!!.getString("Title")
         var price: String? = bundle.getString("Price")
         var Image: String? = bundle.getString("Image")
-       //var Descripcion: String? = bundle.getString("Descripcion")
+        var Descripcion:String? = intent.getStringExtra("Descripcion")
 
         textViewTitleDescripcion.setText(title)
         textViewPriceDescripcion.setText(price)
         Picasso.get().load(Image).into(imageViewDescripcion)
-        //textViewDescripcion.setText(Descripcion)
+        textViewDescripcion.setText(Descripcion)
+
+        /*Necesito poner el id */
+        //textViewDescripcion.setText("jajajja")
+
 
     }
-
-
 }
 
 

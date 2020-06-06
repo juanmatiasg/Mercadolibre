@@ -9,6 +9,7 @@ import android.os.DeadObjectException
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.ArrayAdapter
 import android.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mercadolibredos.Adapter.ProductosAdapter
+import com.example.mercadolibredos.Adapter.ViewHolder
 import com.example.mercadolibredos.Interfaces.MercadoLibreApi
 import com.example.mercadolibredos.Modelo.BaseProductos
 import com.example.mercadolibredos.Modelo.Descripcion
@@ -47,11 +49,8 @@ class MainActivity : AppCompatActivity() {
         searchAction.setOnClickListener { search(searchText.text.toString()) } /*Metodo donde se ejecuta la busqueda  */
         setUpRecyclerView()
         obtenerTodo()  /*Metodo que obtiene todos los Productoss del API*/
-        //obtenerDescripcion()
 
     }
-
-
 
 
     private fun getRetrofit(): Retrofit {
@@ -62,15 +61,20 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+
     fun setUpRecyclerView() {
         mRecyclerView = findViewById(R.id.recyclerView)
         mRecyclerView.setHasFixedSize(true)
         mRecyclerView.layoutManager = LinearLayoutManager(this)
 
     }
+
     companion object {
         var TAG: String = "POKEDEX"
     }
+
+
+
 
     fun buscarPorId(query: String) { /*Funciona*/
         hideKeyboard() /*Oculto el teclado cuando busco por id*/
@@ -100,31 +104,6 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun obtenerDescripcion() { /*Funciona pero hay que buscar varios id*/
-        var service = getRetrofit().create(MercadoLibreApi::class.java)
-        service.getAllDescriptions("MLA855346850").enqueue(object : Callback<Descripcion> {
-            override fun onFailure(call: Call<Descripcion>, t: Throwable) {
-                Log.i(TAG, "No hay datos")
-            }
-
-            override fun onResponse(call: Call<Descripcion>, response: Response<Descripcion>) {
-                var respuesta = response.body() as Descripcion
-                var lista: ArrayList<Descripcion> = ArrayList()
-                lista.add(respuesta) /*Funciona Perfecto*/
-
-
-                for (i in 0..lista.size) {
-                    var d: Descripcion = lista.get(i)
-
-                    Log.i(TAG, d.plain_text)
-                }
-
-            }
-        })
-
-    }
-
-
     fun obtenerTodo() { /*Funciona*/
 
         var servicio = getRetrofit().create(MercadoLibreApi::class.java)
@@ -141,10 +120,7 @@ class MainActivity : AppCompatActivity() {
 
                     mAdapter.ProductosAdapter(lista, this@MainActivity)
                     mRecyclerView.adapter = mAdapter
-
-
                 }
-
 
 
             }

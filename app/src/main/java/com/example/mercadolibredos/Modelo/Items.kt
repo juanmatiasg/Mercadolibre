@@ -1,5 +1,6 @@
 package com.example.mercadolibredos.Modelo
 
+import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 class Items(
@@ -12,7 +13,11 @@ class Items(
     @SerializedName("thumbnail")
     var thumbnail:String,
     @SerializedName("descriptions")
-    var descriptions:ArrayList<Descripcion>
+    var descriptions:MutableList<Descripcion>,
+    @SerializedName("pictures")
+    var pictures:MutableList<Pictures>
+
 
 ) {
+
 }

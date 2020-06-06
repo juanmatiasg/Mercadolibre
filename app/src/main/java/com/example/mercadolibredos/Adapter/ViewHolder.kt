@@ -9,12 +9,14 @@ import android.view.View
 import android.widget.Adapter
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mercadolibredos.DescripcionActivity
 import com.example.mercadolibredos.Interfaces.MercadoLibreApi
 import com.example.mercadolibredos.MainActivity
+import com.example.mercadolibredos.Modelo.BaseProductos
 import com.example.mercadolibredos.Modelo.Descripcion
 import com.example.mercadolibredos.Modelo.Items
 import com.example.mercadolibredos.R
@@ -39,37 +41,70 @@ class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     var descripcion = view.findViewById<TextView>(R.id.textViewDescripcion)
     var cardView = view.findViewById<CardView>(R.id.cardView)
 
-    fun bind(json: Items,position:Int) {
+    fun bind(json: Items) {
         id.text = "ID: " + json.id
-        title.text = "Title: " + json.title
-        price.text = "Price: " + json.price.toString() + "$"
+        title.text = "Titulo: " + json.title
+        price.text = "Precio: " + json.price.toString() + "$"
         photos.loadUrl(json.thumbnail)
-
 
         cardView.setOnClickListener(object : View.OnClickListener {  /*Hago click en el cardView y me lleva a otra activity*/
 
             override fun onClick(v: View) {
+
                 var intent = Intent(v.context, DescripcionActivity::class.java)
                 intent.putExtra("Image", json.thumbnail)
                 intent.putExtra("Title", title.text.toString())
                 intent.putExtra("Price", price.text.toString())
-                //intent.putExtra("Descripcion", json.descriptions.get(position).plain_text)
 
-                /*Pasar los datos extra a Bundle a la clase DescripcionActivity*/
 
-                v.context.startActivity(intent) /*otra Activity(Descripcion)*/
+                /*Mando el llamo a la interfaz del API y paso por parametro el id que necesita para
+                * obtener la descripcion del producto*/
+
+                    var service = getRetrofit().create(MercadoLibreApi::class.java)
+                    service.getAllDescriptions(json.id).enqueue(object : Callback<Descripcion> {
+                        override fun onFailure(call: Call<Descripcion>, t: Throwable) {
+                            Log.i(MainActivity.TAG, "No hay datos")
+                        }
+
+                        override fun onResponse(call: Call<Descripcion>, response: Response<Descripcion>) {
+                            var respuesta = response.body() as Descripcion
+                            var lista: ArrayList<Descripcion> = ArrayList()
+                            lista.add(respuesta) /*Funciona Perfecto*/
+
+                            intent.putExtra("Descripcion",respuesta.plain_text)
+                            v.context.startActivity(intent) /*otra Activity(Descripcion)*/
+
+
+
+                        }
+
+                    })
+
 
             }
 
         })
+
     }
 
 
-    fun ImageView.loadUrl(url:String){
+
+
+    fun ImageView.loadUrl(url: String) {
         Picasso.get().load(url).into(imageView)
 
     }
 
+    private fun getRetrofit(): Retrofit {
+        return Retrofit.Builder()
+                .baseUrl("https://api.mercadolibre.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+
+    }
+
+
 }
+
 
 

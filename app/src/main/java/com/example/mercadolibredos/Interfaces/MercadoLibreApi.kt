@@ -14,6 +14,8 @@ import kotlin.math.sign
 interface MercadoLibreApi {
 
 
+@GET("items/{id}")
+fun pruebaDescripcion(@Path("id") id:String):Call<Items>
 
  @GET("items/{id}")  /*se buscar un solo producto*/
  fun search(@Path("id")id:String):Call<Items>
