@@ -12,21 +12,24 @@
         android:id="@+id/searchAction"
         android:layout_width="53dp"
         android:layout_height="39dp"
+        android:layout_marginEnd="36dp"
+        android:layout_marginRight="36dp"
         android:backgroundTint="#848C8B"
         android:drawableBottom="@drawable/ic_search_mercado_24dp"
         app:layout_constraintBottom_toBottomOf="@+id/searchText"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.529"
-        app:layout_constraintStart_toEndOf="@+id/searchText"
         app:layout_constraintTop_toTopOf="@+id/searchText"
         app:layout_constraintVertical_bias="0.0"></Button>
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/searchText"
-        android:layout_width="276dp"
+        android:layout_width="500dp"
         android:layout_height="39dp"
         android:layout_margin="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="96dp"
+        android:layout_marginRight="96dp"
+        app:layout_constraintEnd_toStartOf="@+id/searchAction"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -34,8 +37,8 @@
 
     <ScrollView
         android:id="@+id/scrollView4"
-        android:layout_width="396dp"
-        android:layout_height="511dp"
+        android:layout_width="match_parent"
+        android:layout_height="260dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.304"
         app:layout_constraintStart_toStartOf="parent"
@@ -43,13 +46,15 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"/>
     </ScrollView>
 
     <androidx.recyclerview.widget.RecyclerView
+
         android:id="@+id/recyclerView"
-        android:layout_width="363dp"
-        android:layout_height="457dp"
+        android:layout_width="match_parent"
+        android:layout_height="260dp"
         android:layout_marginStart="19dp"
         android:layout_marginLeft="19dp"
         android:layout_marginEnd="14dp"

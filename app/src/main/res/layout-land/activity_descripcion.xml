@@ -10,63 +10,62 @@
 
     <TextView
         android:id="@+id/textViewTitleDescripcion"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_width="234dp"
+        android:layout_height="34dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
         android:background="#FFC107"
         android:padding="5dp"
         android:text="Titulo"
         android:textColor="#000000"
         android:textSize="18dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewDescripcion"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewDescripcion">
+        app:layout_constraintTop_toTopOf="@+id/imageViewDescripcion"
+        app:layout_constraintVertical_bias="0.0">
 
     </TextView>
 
     <TextView
         android:id="@+id/textViewPriceDescripcion"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
         android:gravity="center"
         android:text="Price"
+        android:textColor="#FFC107"
         android:textSize="16dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/textViewTitleDescripcion"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView2"
-        app:layout_constraintVertical_bias="0.322"
-        android:textColor="#FFC107">
+        app:layout_constraintStart_toStartOf="@+id/textViewTitleDescripcion"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTitleDescripcion">
 
     </TextView>
 
+
     <ImageView
+        android:layout_marginBottom="10dp"
         android:id="@+id/imageViewDescripcion"
         android:layout_width="399dp"
         android:layout_height="96dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
         android:layout_marginTop="28dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:mipmap/sym_def_app_icon" />
 
-
     <androidx.core.widget.NestedScrollView
-
         android:id="@+id/scrollView2"
-        android:layout_width="378dp"
-        android:layout_height="225dp"
-        android:layout_marginTop="20dp"
+        android:layout_width="647dp"
+        android:layout_height="147dp"
+        android:layout_margin="20dp"
         android:background="#DDDBD5"
-        android:padding="9dp"
+        android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.515"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTitleDescripcion">
+        app:layout_constraintTop_toBottomOf="@+id/imageViewDescripcion">
 
 
         <TextView

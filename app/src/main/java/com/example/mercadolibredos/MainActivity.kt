@@ -1,19 +1,27 @@
 package com.example.mercadolibredos
 
+import android.app.ActionBar
 import android.app.Activity
 import android.app.IntentService
 import android.content.ClipData
+import android.content.Context
+import android.content.Intent
+
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.DeadObjectException
+import android.os.Parcelable
+import android.os.PersistableBundle
+
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.ArrayAdapter
-import android.widget.SearchView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mercadolibredos.Adapter.ProductosAdapter
@@ -22,10 +30,12 @@ import com.example.mercadolibredos.Interfaces.MercadoLibreApi
 import com.example.mercadolibredos.Modelo.BaseProductos
 import com.example.mercadolibredos.Modelo.Descripcion
 import com.example.mercadolibredos.Modelo.Items
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_descripcion.*
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.item_productos.*
+import kotlinx.android.synthetic.main.item_productos.view.*
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
 
@@ -38,18 +48,46 @@ import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
 
+
     lateinit var mRecyclerView: RecyclerView
     var mAdapter: ProductosAdapter = ProductosAdapter()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         searchAction.setOnClickListener { search(searchText.text.toString()) } /*Metodo donde se ejecuta la busqueda  */
         setUpRecyclerView()
         obtenerTodo()  /*Metodo que obtiene todos los Productoss del API*/
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu, menu) /*inflar el diseno del menu*/
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) { /*itemId = es Favorito o Productos*/
+            R.id.favoritos -> obtenerFavoritos()  /*Obtener un solo objeto chequeados pasado por paramtro*/
+
+        }
+
+        return true
+    }
+
+    fun obtenerFavoritos() {
+        var intent = Intent(this, FavoritosActivity::class.java)
+        var gson = Gson()
+        var lista = mAdapter.listasChequeadas
+
+        //var objeto = gson.fromJson(mAdapter.listasChequeadas.toString(),Items::class.java)
+
+        intent.putExtra("id",gson.toJson(lista))
+        startActivity(intent)
+
+        /*mAdapter.ProductosAdapter(mAdapter.listasChequeadas, this)
+         mRecyclerView.adapter = mAdapter /*Pongo en el adapter la lista chequadas*/*/
     }
 
 
@@ -63,17 +101,21 @@ class MainActivity : AppCompatActivity() {
 
 
     fun setUpRecyclerView() {
+
         mRecyclerView = findViewById(R.id.recyclerView)
         mRecyclerView.setHasFixedSize(true)
-        mRecyclerView.layoutManager = LinearLayoutManager(this)
+        if (baseContext.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
 
+            mRecyclerView.layoutManager = LinearLayoutManager(this) /*Si esta en orientacion Portrait aplica un LinearLayout*/
+        } else {
+
+            mRecyclerView.layoutManager = GridLayoutManager(this, 2) /*En el caso Contrario aplica El Grid layout con 2 columnas */
+        }
     }
 
     companion object {
         var TAG: String = "POKEDEX"
     }
-
-
 
 
     fun buscarPorId(query: String) { /*Funciona*/
@@ -132,14 +174,11 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun search(term: String) { /*Funciona*/
-
-
         hideKeyboard() /*Oculta el teclado cuando lo busco*/
-
         var service = getRetrofit().create(MercadoLibreApi::class.java)
         service.searching(term).enqueue(object : Callback<BaseProductos> {
             override fun onFailure(call: Call<BaseProductos>, t: Throwable) {
-                Toast.makeText(this@MainActivity, "No se han encontrado el Articulo", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@MainActivity, "No hay conexion", Toast.LENGTH_SHORT).show()
             }
 
             override fun onResponse(call: Call<BaseProductos>, response: Response<BaseProductos>) {

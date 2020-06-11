@@ -1,7 +1,10 @@
 package com.example.mercadolibredos.Modelo
 
+import android.os.Parcel
+import android.os.Parcelable
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 class Items(
     @SerializedName("id")
@@ -17,7 +20,5 @@ class Items(
     @SerializedName("pictures")
     var pictures:MutableList<Pictures>
 
-
-) {
-
+){
 }
