@@ -30,6 +30,7 @@ class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     var check = view.findViewById<CheckBox>(R.id.checkbox)
 
 
+
     fun bind(json: Items) {
         id.text = "ID: " + json.id
         title.text = "Titulo: " + json.title

@@ -5,12 +5,8 @@ import android.content.Context
 
 import android.view.*
 import androidx.recyclerview.widget.RecyclerView
-import com.example.mercadolibredos.MainActivity
 import com.example.mercadolibredos.Modelo.Items
 import com.example.mercadolibredos.R
-import kotlinx.android.synthetic.main.activity_favoritos.view.*
-import kotlinx.android.synthetic.main.activity_main.view.*
-import kotlinx.android.synthetic.main.item_productos.view.*
 
 
 class ProductosAdapter : RecyclerView.Adapter<ViewHolder>() {
@@ -35,22 +31,24 @@ class ProductosAdapter : RecyclerView.Adapter<ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+
+
         var item = lista.get(position)
         holder.bind(item)
         holder.check.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-
                 if (holder.check.isChecked) {/*Si el item esta chqueada , le agregao a Favoritos*/
+                //    prefs.edit().putBoolean("checkbox",holder.check.isChecked)
                     listasChequeadas.add(item) /*Funciona*/
+
                 } else {
                     listasChequeadas.remove(item) /*Funciona*/
                 }
 
+
             }
 
         })
-
-
 
 
     }

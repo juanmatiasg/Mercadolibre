@@ -4,7 +4,6 @@
     <item>
         <bitmap android:src="@drawable/ic_mercado_libre_logo"
             android:gravity="center">
-
         </bitmap>
     </item>
 </layer-list>

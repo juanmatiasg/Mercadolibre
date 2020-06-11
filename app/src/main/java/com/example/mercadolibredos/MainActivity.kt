@@ -1,57 +1,39 @@
 package com.example.mercadolibredos
 
-import android.app.ActionBar
 import android.app.Activity
-import android.app.IntentService
-import android.content.ClipData
-import android.content.Context
 import android.content.Intent
 
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.DeadObjectException
-import android.os.Parcelable
-import android.os.PersistableBundle
 
-import android.util.Log
+
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.GridLayoutManager.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mercadolibredos.Adapter.ProductosAdapter
-import com.example.mercadolibredos.Adapter.ViewHolder
 import com.example.mercadolibredos.Interfaces.MercadoLibreApi
 import com.example.mercadolibredos.Modelo.BaseProductos
-import com.example.mercadolibredos.Modelo.Descripcion
 import com.example.mercadolibredos.Modelo.Items
-import com.google.gson.Gson
-import kotlinx.android.synthetic.main.activity_descripcion.*
 
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.item_productos.*
-import kotlinx.android.synthetic.main.item_productos.view.*
-import okhttp3.RequestBody
-import okhttp3.ResponseBody
 
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
 
 
     lateinit var mRecyclerView: RecyclerView
     var mAdapter: ProductosAdapter = ProductosAdapter()
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,27 +49,22 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) { /*itemId = es Favorito o Productos*/
             R.id.favoritos -> obtenerFavoritos()  /*Obtener un solo objeto chequeados pasado por paramtro*/
-
+            R.id.productos -> obtenerTodo()
         }
 
         return true
     }
 
     fun obtenerFavoritos() {
-        var intent = Intent(this, FavoritosActivity::class.java)
-        var gson = Gson()
-        var lista = mAdapter.listasChequeadas
 
-        //var objeto = gson.fromJson(mAdapter.listasChequeadas.toString(),Items::class.java)
+        mAdapter.ProductosAdapter(mAdapter.listasChequeadas, this)
+        mRecyclerView.adapter = mAdapter  /*Pongo en el adapter la lista chequadas*/
 
-        intent.putExtra("id",gson.toJson(lista))
-        startActivity(intent)
 
-        /*mAdapter.ProductosAdapter(mAdapter.listasChequeadas, this)
-         mRecyclerView.adapter = mAdapter /*Pongo en el adapter la lista chequadas*/*/
     }
 
 
