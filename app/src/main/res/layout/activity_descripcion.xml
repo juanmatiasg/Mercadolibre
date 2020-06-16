@@ -5,15 +5,38 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DescripcionActivity"
-    >
+    tools:context=".Activities.DescripcionActivity">
+
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="53dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="6dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_mercadolibreiconaso" />
 
     <TextView
         android:id="@+id/textViewTitleDescripcion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:background="#FFC107"
+        android:background="@color/colorPrimary"
         android:padding="5dp"
         android:text="Titulo"
         android:textColor="#000000"
@@ -25,48 +48,49 @@
 
     </TextView>
 
+
     <TextView
         android:id="@+id/textViewPriceDescripcion"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="17dp"
         android:gravity="center"
         android:text="Price"
+        android:textColor="#000000"
         android:textSize="16dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scrollView2"
-        app:layout_constraintVertical_bias="0.322"
-        android:textColor="#FFC107">
+        app:layout_constraintVertical_bias="0.228">
 
     </TextView>
+
 
     <ImageView
         android:id="@+id/imageViewDescripcion"
         android:layout_width="399dp"
         android:layout_height="96dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="24dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:srcCompat="@android:mipmap/sym_def_app_icon" />
-
 
     <androidx.core.widget.NestedScrollView
 
         android:id="@+id/scrollView2"
-        android:layout_width="378dp"
-        android:layout_height="225dp"
+        android:layout_width="356dp"
+        android:layout_height="213dp"
         android:layout_marginTop="20dp"
         android:background="#DDDBD5"
         android:padding="9dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.515"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTitleDescripcion">
+        app:layout_constraintTop_toBottomOf="@+id/textViewTitleDescripcion"
+        android:scrollbarThumbVertical="@drawable/scroll_desc"
+        android:scrollbarAlwaysDrawVerticalTrack="true">
 
 
         <TextView
@@ -81,5 +105,6 @@
             tools:layout_editor_absoluteY="305dp" />
 
     </androidx.core.widget.NestedScrollView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

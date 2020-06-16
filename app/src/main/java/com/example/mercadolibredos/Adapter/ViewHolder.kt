@@ -1,14 +1,17 @@
 package com.example.mercadolibredos.Adapter
 
+
+import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.mercadolibredos.DescripcionActivity
+import com.example.mercadolibredos.Activities.DescripcionActivity
 import com.example.mercadolibredos.Interfaces.MercadoLibreApi
-import com.example.mercadolibredos.MainActivity
+import com.example.mercadolibredos.Activities.MainActivity
+import com.example.mercadolibredos.Api.Api
 import com.example.mercadolibredos.Modelo.Descripcion
 import com.example.mercadolibredos.Modelo.Items
 import com.example.mercadolibredos.R
@@ -28,15 +31,18 @@ class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     var photos = view.findViewById<ImageView>(R.id.imageView)
     var cardView = view.findViewById<CardView>(R.id.cardView)
     var check = view.findViewById<CheckBox>(R.id.checkbox)
-
+    var btnAgregar = view.findViewById<Button>(R.id.btnAgregar)
 
 
     fun bind(json: Items) {
+
         id.text = "ID: " + json.id
         title.text = "Titulo: " + json.title
         price.text = "Precio: " + json.price.toString() + "$"
         photos.loadUrl(json.thumbnail)
 
+        val sharedPreferences = check.context.getSharedPreferences(check.context.getString(R.string.shared_key), Context.MODE_PRIVATE)
+        check.isChecked = sharedPreferences.getBoolean(json.id, false)
 
 
         cardView.setOnClickListener(object : View.OnClickListener {  /*Hago click en el cardView y me lleva a otra activity*/
@@ -52,7 +58,7 @@ class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
                 /*Mando el llamo a la interfaz del API y paso por parametro el id que necesita para
                 * obtener la descripcion del producto*/
 
-                var service = getRetrofit().create(MercadoLibreApi::class.java)
+                var service = Api.getRetrofit()
                 service.getAllDescriptions(json.id).enqueue(object : Callback<Descripcion> {
                     override fun onFailure(call: Call<Descripcion>, t: Throwable) {
                         Log.i(MainActivity.TAG, "No hay datos")
@@ -62,6 +68,7 @@ class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
                         var respuesta = response.body() as Descripcion
                         var lista: ArrayList<Descripcion> = ArrayList()
                         lista.add(respuesta) /*Funciona Perfecto*/
+
 
                         intent.putExtra("Descripcion", respuesta.plain_text)
                         v.context.startActivity(intent) /*otra Activity(Descripcion)*/
@@ -81,14 +88,6 @@ class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     fun ImageView.loadUrl(url: String) {
         Picasso.get().load(url).into(imageView)
-
-    }
-
-    private fun getRetrofit(): Retrofit {
-        return Retrofit.Builder()
-                .baseUrl("https://api.mercadolibre.com/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
 
     }
 

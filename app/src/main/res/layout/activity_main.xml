@@ -4,9 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
+    tools:context=".Activities.MainActivity"
     android:id="@+id/portrait">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </androidx.appcompat.widget.Toolbar>
 
     <Button
         android:id="@+id/searchAction"
@@ -22,13 +33,15 @@
         app:layout_constraintVertical_bias="0.0"></Button>
 
     <com.google.android.material.textfield.TextInputEditText
+        android:textColorHint="#0044FF"
         android:id="@+id/searchText"
         android:layout_width="276dp"
         android:layout_height="39dp"
         android:layout_margin="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
     </com.google.android.material.textfield.TextInputEditText>
 
@@ -59,6 +72,17 @@
         app:layout_constraintStart_toStartOf="@+id/scrollView4"
         app:layout_constraintTop_toBottomOf="@+id/searchAction"
         tools:listitem="@layout/item_productos" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="53dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="6dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_mercadolibreiconaso" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

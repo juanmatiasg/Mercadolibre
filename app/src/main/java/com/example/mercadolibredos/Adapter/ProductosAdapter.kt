@@ -4,13 +4,18 @@ import android.content.Context
 
 
 import android.view.*
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mercadolibredos.Modelo.Items
+import com.example.mercadolibredos.SharedPreferenceListas.PrefConfig
 import com.example.mercadolibredos.R
 
 
 class ProductosAdapter : RecyclerView.Adapter<ViewHolder>() {
+
+    var listaCarritos: MutableList<Items> = mutableListOf()
     var listasChequeadas: MutableList<Items> = mutableListOf()
+
     var lista: MutableList<Items> = mutableListOf()
     lateinit var context: Context
 
@@ -31,20 +36,40 @@ class ProductosAdapter : RecyclerView.Adapter<ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
-
         var item = lista.get(position)
         holder.bind(item)
+
+
         holder.check.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
+
+                val sharedPreferences = holder.check.context.getSharedPreferences(holder.check.context.getString(R.string.shared_key), Context.MODE_PRIVATE)
+
+                val editor = sharedPreferences.edit()
+
                 if (holder.check.isChecked) {/*Si el item esta chqueada , le agregao a Favoritos*/
-                //    prefs.edit().putBoolean("checkbox",holder.check.isChecked)
                     listasChequeadas.add(item) /*Funciona*/
+                    editor.putBoolean(item.id, true) /*Guarda el checkbox true*/
+                    PrefConfig.wirteListINPref(context, listasChequeadas) /*Guarda el estado de la lista*/
 
                 } else {
-                    listasChequeadas.remove(item) /*Funciona*/
+                    listasChequeadas.remove(item)/*Funciona*/
+                    editor.putBoolean(item.id, false) /*Guarda el checkbox false*/
+                    PrefConfig.wirteListINPref(context, listasChequeadas) /*Guarda el estado de la lista */
+
                 }
 
+                editor.apply()
+
+            }
+
+        })
+
+        holder.btnAgregar.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View) {
+                Toast.makeText(v.context, "Se agrego al Carrito", Toast.LENGTH_SHORT).show()
+                listaCarritos.add(item)
+                PrefConfig.wirteListINPref(context, listaCarritos) /*Guardo la lista que agrego en el carrito*/
 
             }
 

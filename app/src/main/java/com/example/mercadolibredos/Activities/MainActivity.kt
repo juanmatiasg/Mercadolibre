@@ -1,4 +1,4 @@
-package com.example.mercadolibredos
+package com.example.mercadolibredos.Activities
 
 import android.app.Activity
 import android.content.Intent
@@ -13,13 +13,17 @@ import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mercadolibredos.Adapter.ProductosAdapter
+import com.example.mercadolibredos.Api.Api
 import com.example.mercadolibredos.Interfaces.MercadoLibreApi
 import com.example.mercadolibredos.Modelo.BaseProductos
 import com.example.mercadolibredos.Modelo.Items
+import com.example.mercadolibredos.R
+import com.example.mercadolibredos.Utils.hideKeyboard
 
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -34,46 +38,46 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var mRecyclerView: RecyclerView
     var mAdapter: ProductosAdapter = ProductosAdapter()
+    lateinit var toolbar: Toolbar
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar!!.setDisplayShowTitleEnabled(false) /*Sacar el titulo por defecto*/
+
         searchAction.setOnClickListener { search(searchText.text.toString()) } /*Metodo donde se ejecuta la busqueda  */
         setUpRecyclerView()
         obtenerTodo()  /*Metodo que obtiene todos los Productoss del API*/
 
     }
 
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu, menu) /*inflar el diseno del menu*/
         return true
     }
 
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) { /*itemId = es Favorito o Productos*/
-            R.id.favoritos -> obtenerFavoritos()  /*Obtener un solo objeto chequeados pasado por paramtro*/
-            R.id.productos -> obtenerTodo()
+            R.id.favoritos -> obtenerFavoritos()/*Obtener un solo objeto chequeados pasado por paramtro*/
+            R.id.verCarrito -> obtenerCarrito()
         }
 
         return true
     }
 
+
     fun obtenerFavoritos() {
-
-        mAdapter.ProductosAdapter(mAdapter.listasChequeadas, this)
-        mRecyclerView.adapter = mAdapter  /*Pongo en el adapter la lista chequadas*/
-
-
+        var intent = Intent(this, FavoritosActivity::class.java)
+        startActivity(intent)
     }
 
-
-    private fun getRetrofit(): Retrofit {
-        return Retrofit.Builder()
-                .baseUrl("https://api.mercadolibre.com/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-
+    fun obtenerCarrito() {
+        var intent = Intent(this, CarritoActivity::class.java)
+        startActivity(intent)
     }
 
 
@@ -90,14 +94,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    companion object {
-        var TAG: String = "POKEDEX"
-    }
+
 
 
     fun buscarPorId(query: String) { /*Funciona*/
         hideKeyboard() /*Oculto el teclado cuando busco por id*/
-        var service = getRetrofit().create(MercadoLibreApi::class.java)
+        var service = Api.getRetrofit()
         service.search(query).enqueue(object : Callback<Items> {
             override fun onFailure(call: Call<Items>, t: Throwable) {
                 Toast.makeText(this@MainActivity, "No hay conexion", Toast.LENGTH_SHORT).show()
@@ -125,7 +127,8 @@ class MainActivity : AppCompatActivity() {
 
     fun obtenerTodo() { /*Funciona*/
 
-        var servicio = getRetrofit().create(MercadoLibreApi::class.java)
+        var servicio = Api.getRetrofit()
+
         servicio.getAll().enqueue(object : Callback<BaseProductos> {
             override fun onFailure(call: Call<BaseProductos>, t: Throwable) {
                 Toast.makeText(this@MainActivity, "No hay conexion", Toast.LENGTH_SHORT).show()
@@ -152,7 +155,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun search(term: String) { /*Funciona*/
         hideKeyboard() /*Oculta el teclado cuando lo busco*/
-        var service = getRetrofit().create(MercadoLibreApi::class.java)
+        var service = Api.getRetrofit()
         service.searching(term).enqueue(object : Callback<BaseProductos> {
             override fun onFailure(call: Call<BaseProductos>, t: Throwable) {
                 Toast.makeText(this@MainActivity, "No hay conexion", Toast.LENGTH_SHORT).show()
@@ -178,17 +181,8 @@ class MainActivity : AppCompatActivity() {
 
 
     }
-
-
-    fun Activity.hideKeyboard() {
-        hideKeyboard(currentFocus ?: View(this))
-
-    }
-
-    private fun hideKeyboard(view: View) {
-        val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
-
+    companion object {
+        var TAG: String = "POKEDEX"
     }
 
 

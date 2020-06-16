@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">MercadoLibre</string>
+    <string name="shared_key">shared_key</string>
 
 </resources>

@@ -5,8 +5,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DescripcionActivity"
-    >
+    tools:context=".Activities.DescripcionActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </androidx.appcompat.widget.Toolbar>
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="53dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="6dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_mercadolibreiconaso" />
+
 
     <TextView
         android:id="@+id/textViewTitleDescripcion"
@@ -45,21 +67,20 @@
 
 
     <ImageView
-        android:layout_marginBottom="10dp"
         android:id="@+id/imageViewDescripcion"
         android:layout_width="399dp"
         android:layout_height="96dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="20dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:srcCompat="@android:mipmap/sym_def_app_icon" />
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollView2"
         android:layout_width="647dp"
-        android:layout_height="147dp"
+        android:layout_height="180dp"
         android:layout_margin="20dp"
         android:background="#DDDBD5"
         android:padding="10dp"

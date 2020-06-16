@@ -4,10 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
+    tools:context=".Activities.MainActivity"
     android:id="@+id/portrait">
-
-
     <Button
         android:id="@+id/searchAction"
         android:layout_width="53dp"
@@ -21,17 +19,41 @@
         app:layout_constraintTop_toTopOf="@+id/searchText"
         app:layout_constraintVertical_bias="0.0"></Button>
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </androidx.appcompat.widget.Toolbar>
+
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="53dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_mercadolibreiconaso" />
+
+
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/searchText"
-        android:layout_width="500dp"
+        android:layout_width="450dp"
         android:layout_height="39dp"
         android:layout_margin="20dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="96dp"
-        android:layout_marginRight="96dp"
+        android:layout_marginEnd="44dp"
+        android:layout_marginRight="44dp"
         app:layout_constraintEnd_toStartOf="@+id/searchAction"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintStart_toStartOf="@+id/recyclerView"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
     </com.google.android.material.textfield.TextInputEditText>
 
@@ -39,22 +61,21 @@
         android:id="@+id/scrollView4"
         android:layout_width="match_parent"
         android:layout_height="260dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.304"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchAction">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"/>
+            android:layout_height="wrap_content" />
     </ScrollView>
 
     <androidx.recyclerview.widget.RecyclerView
 
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="260dp"
+        android:layout_height="230dp"
         android:layout_marginStart="19dp"
         android:layout_marginLeft="19dp"
         android:layout_marginEnd="14dp"
@@ -64,6 +85,5 @@
         app:layout_constraintStart_toStartOf="@+id/scrollView4"
         app:layout_constraintTop_toBottomOf="@+id/searchAction"
         tools:listitem="@layout/item_productos" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
