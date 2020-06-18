@@ -7,6 +7,7 @@ import com.example.mercadolibredos.Modelo.Items
 import com.example.mercadolibredos.Modelo.Pictures
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -25,10 +26,13 @@ interface MercadoLibreApi {
  fun searching(@Query("q") q:String):Call<BaseProductos>
 
     @GET("items/{id}/descriptions/plain_text") /*Obtiene la Descripcion del Producto en ViewHolder*/
-    fun getAllDescriptions(@Path("id") id: String?):Call<Descripcion>
+    fun getAllDescriptions(@Path("id") id: String):Call<Descripcion>
 
-    @GET("items/{id}/pictures/url")
-    fun getPictures(@Path("id") id: String?):Call<Pictures>
+    @GET("items/{id}")
+    fun getPictures(@Path("id") id: String):Call<Items>
+
+  //  @GET("pictures/{id}")
+//    fun getPictures(@Path("id") id: String):Call<Pictures>
 
 
 }

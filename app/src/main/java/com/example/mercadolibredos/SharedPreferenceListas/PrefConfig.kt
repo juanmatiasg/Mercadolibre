@@ -3,6 +3,7 @@ package com.example.mercadolibredos.SharedPreferenceListas
 import android.content.Context
 
 import com.example.mercadolibredos.Modelo.Items
+import com.example.mercadolibredos.Modelo.Pictures
 import com.example.mercadolibredos.R
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -22,6 +23,7 @@ class PrefConfig {
             var editor = prefs.edit()
             editor.putString(LIST_KEY, jsonString)
             editor.apply()
+
         }
 
         /*Obtengo el estado de la lista */
@@ -36,11 +38,8 @@ class PrefConfig {
 
             var list: MutableList<Items> = gson.fromJson(jsonString, type)
 
-
             return list
         }
-
-
 
 
     }

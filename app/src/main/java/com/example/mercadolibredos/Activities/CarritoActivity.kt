@@ -19,9 +19,7 @@ class CarritoActivity : AppCompatActivity() {
     var mAdapter:AdapterCarrito = AdapterCarrito()
     lateinit var textViewTotal:TextView
 
-
     var sumatoria:Double = 0.0
-    var restar:Double = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,13 +34,14 @@ class CarritoActivity : AppCompatActivity() {
         var lista = PrefConfig.readListFromPrefs(this) /*LLamo al preference y obtengo los datos*/
 
 
+
         for(i in lista) {
             sumatoria += i.price
         }
 
         textViewTotal.setText("Total: ${sumatoria}$")
         mAdapter.AdapterCarrito(lista,this)
-        mRecyclerView.adapter=mAdapter
+        mAdapter.notifyDataSetChanged()
 
 
     }

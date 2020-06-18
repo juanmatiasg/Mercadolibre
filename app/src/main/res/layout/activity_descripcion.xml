@@ -5,6 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     tools:context=".Activities.DescripcionActivity">
 
 
@@ -71,26 +72,25 @@
         android:id="@+id/imageViewDescripcion"
         android:layout_width="399dp"
         android:layout_height="96dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:srcCompat="@android:mipmap/sym_def_app_icon" />
 
-    <androidx.core.widget.NestedScrollView
+    <ScrollView
 
         android:id="@+id/scrollView2"
-        android:layout_width="356dp"
-        android:layout_height="213dp"
-        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="256dp"
         android:background="#DDDBD5"
         android:padding="9dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.515"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTitleDescripcion"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
         android:scrollbarThumbVertical="@drawable/scroll_desc"
-        android:scrollbarAlwaysDrawVerticalTrack="true">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTitleDescripcion">
 
 
         <TextView
@@ -104,7 +104,7 @@
             tools:layout_editor_absoluteX="-16dp"
             tools:layout_editor_absoluteY="305dp" />
 
-    </androidx.core.widget.NestedScrollView>
+    </ScrollView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,8 +12,7 @@ class ViewHolderFavoritos(view: View) : RecyclerView.ViewHolder(view) {
     var title = view.findViewById<TextView>(R.id.textViewTitleFavoritos)
     var price = view.findViewById<TextView>(R.id.textViewPrecioFavoritos)
     var photos = view.findViewById<ImageView>(R.id.imageViewFavoritos)
-
-
+    var cardView = view.findViewById<CardView>(R.id.cardViewFavoritos)
 }
 
 

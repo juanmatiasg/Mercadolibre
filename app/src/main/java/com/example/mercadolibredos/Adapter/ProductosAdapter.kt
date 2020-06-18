@@ -4,11 +4,14 @@ import android.content.Context
 
 
 import android.view.*
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mercadolibredos.Modelo.Items
 import com.example.mercadolibredos.SharedPreferenceListas.PrefConfig
 import com.example.mercadolibredos.R
+import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.item_productos.view.*
 
 
 class ProductosAdapter : RecyclerView.Adapter<ViewHolder>() {
@@ -37,8 +40,7 @@ class ProductosAdapter : RecyclerView.Adapter<ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         var item = lista.get(position)
-        holder.bind(item)
-
+        holder.bind(item, position)
 
         holder.check.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
@@ -74,7 +76,6 @@ class ProductosAdapter : RecyclerView.Adapter<ViewHolder>() {
             }
 
         })
-
 
     }
 

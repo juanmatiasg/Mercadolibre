@@ -4,8 +4,10 @@ import android.app.Activity
 import android.content.Intent
 
 import android.content.res.Configuration
+import android.nfc.Tag
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 
 
 import android.view.Menu
@@ -22,6 +24,7 @@ import com.example.mercadolibredos.Api.Api
 import com.example.mercadolibredos.Interfaces.MercadoLibreApi
 import com.example.mercadolibredos.Modelo.BaseProductos
 import com.example.mercadolibredos.Modelo.Items
+import com.example.mercadolibredos.Modelo.Pictures
 import com.example.mercadolibredos.R
 import com.example.mercadolibredos.Utils.hideKeyboard
 
@@ -44,6 +47,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayShowTitleEnabled(false) /*Sacar el titulo por defecto*/
@@ -52,32 +56,6 @@ class MainActivity : AppCompatActivity() {
         setUpRecyclerView()
         obtenerTodo()  /*Metodo que obtiene todos los Productoss del API*/
 
-    }
-
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu, menu) /*inflar el diseno del menu*/
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) { /*itemId = es Favorito o Productos*/
-            R.id.favoritos -> obtenerFavoritos()/*Obtener un solo objeto chequeados pasado por paramtro*/
-            R.id.verCarrito -> obtenerCarrito()
-        }
-
-        return true
-    }
-
-
-    fun obtenerFavoritos() {
-        var intent = Intent(this, FavoritosActivity::class.java)
-        startActivity(intent)
-    }
-
-    fun obtenerCarrito() {
-        var intent = Intent(this, CarritoActivity::class.java)
-        startActivity(intent)
     }
 
 
@@ -93,8 +71,6 @@ class MainActivity : AppCompatActivity() {
             mRecyclerView.layoutManager = GridLayoutManager(this, 2) /*En el caso Contrario aplica El Grid layout con 2 columnas */
         }
     }
-
-
 
 
     fun buscarPorId(query: String) { /*Funciona*/
@@ -181,6 +157,55 @@ class MainActivity : AppCompatActivity() {
 
 
     }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu, menu) /*inflar el diseno del menu*/
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) { /*itemId = es Favorito o Productos*/
+            R.id.favoritos -> obtenerFavoritos()/*Obtener un solo objeto chequeados pasado por paramtro*/
+            R.id.verCarrito -> obtenerCarrito()
+        }
+
+        return true
+    }
+
+
+    fun obtenerFavoritos() {
+        var intent = Intent(this, FavoritosActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun obtenerCarrito() {
+        var intent = Intent(this, CarritoActivity::class.java)
+        startActivity(intent)
+    }
+
+
+    /* fun pictures(){ /*Funciona Perecto*/
+         var service = Api.getRetrofit()
+         service.getPictures("MLA847644305").enqueue(object :Callback<Items>{
+             override fun onFailure(call: Call<Items>, t: Throwable) {
+                 Log.i(TAG,"No hay fotos ")
+             }
+
+             override fun onResponse(call: Call<Items>, response: Response<Items>) {
+                 var pic = response.body() as Items
+                 var lista:MutableList<Pictures> = pic.pictures
+
+                 for (i in 0..lista.size) {
+                     var p = lista.get(i)
+                     Log.i(TAG, p.url)
+                 }
+             }
+
+         })
+
+
+     }*/
+
     companion object {
         var TAG: String = "POKEDEX"
     }

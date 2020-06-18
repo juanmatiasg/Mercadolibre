@@ -139,45 +139,117 @@ fun obtenerTodo() {
 
 3) En la funcion OnCreate del MainActivity llamo a la funcion obtenerTodo()
 
-● Como usuario quiero poder visulizar el detalle de un Producto al clickear su item en el listado
-Dicho detalle debe incluir mas informacion que la mostrada en el listado.(Llegue hacer click al item, mostrar el title, price y thumbail 
-pero, me falta mostrar la descripcion)
+● Como usuario quiero poder visualizar el detalle de un Producto al clickear
+su ítem en el listado. Dicho detalle debe incluir más información que la
+mostrada en el el listado.
 
-1)En la clase ViewHolder tuve crear una funcion de cardView
 
- cardView.setOnClickListener(object : View.OnClickListener {  /*Hago click en el cardView y me lleva a otra activity*/
+En la clase ViewHolder , llamo a la variable cardView y hago una funcion cuando hago click al item , me lleva a otra Activity
+
+
+
+class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+
+    var id = view.findViewById<TextView>(R.id.textViewId)
+    var title = view.findViewById<TextView>(R.id.textViewTItle)
+    var price = view.findViewById<TextView>(R.id.textViewPrecio)
+    var photos = view.findViewById<ImageView>(R.id.imageView)
+    var cardView = view.findViewById<CardView>(R.id.cardView)
+    var check = view.findViewById<CheckBox>(R.id.checkbox)
+    var btnAgregar = view.findViewById<Button>(R.id.btnAgregar)
+
+
+
+    fun bind(json: Items, position: Int) {
+
+        id.text = "ID: " + json.id
+        title.text = "Titulo: " + json.title
+        price.text = "Precio: " + json.price.toString() + "$"
+        photos.loadUrl(json.thumbnail)
+
+
+        val sharedPreferences = check.context.getSharedPreferences(check.context.getString(R.string.shared_key), Context.MODE_PRIVATE)
+        check.isChecked = sharedPreferences.getBoolean(json.id, false)
+
+
+        cardView.setOnClickListener(object : View.OnClickListener {  /*Hago click en el cardView y me lleva a otra activity*/
 
             override fun onClick(v: View) {
+
+
                 var intent = Intent(v.context, DescripcionActivity::class.java)
                 intent.putExtra("Image", json.thumbnail)
                 intent.putExtra("Title", title.text.toString())
                 intent.putExtra("Price", price.text.toString())
-               // intent.putExtra("Descripcion",json.descriptions.get(position).plain_text) (Falta mostrar descripcion)
-  		
-		/*Pasar los datos extra a Bundle a la clase DescripcionActivity*/
 
-		v.context.startActivity(intent) /*otra Activity(Descripcion)*/
 
-2) En la clase DescripcionActivity obtengo los extraas de ViewHolder
+                /*Creo la variable service y llamo a la interfaz del API , paso por parametro el id que necesita para
+                * obtener la descripcion del producto*/
 
-override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_descripcion)
+                var service = Api.getRetrofit()
+                service.getAllDescriptions(json.id).enqueue(object : Callback<Descripcion> {
+                    override fun onFailure(call: Call<Descripcion>, t: Throwable) {
+                        Log.i(MainActivity.TAG, "No hay datos")
+                    }
 
-       var bundle:Bundle? = intent.extras
+                    override fun onResponse(call: Call<Descripcion>, response: Response<Descripcion>) {
+                        var respuesta = response.body() as Descripcion
 
-        var title:String? = bundle!!.getString("Title")
-        var price:String? = bundle.getString("Price")
-        var Image:String? = bundle.getString("Image")
-       // var Descripcion:String? = bundle.getString("Descripcion") /*Falta la descripcion*/
+                        intent.putExtra("Descripcion", respuesta.plain_text)
 
-        textViewTitleDescripcion.setText(title)
-        textViewPriceDescripcion.setText(price)
-        Picasso.get().load(Image).into(imageViewDescripcion)
-        //textViewDescripcion.setText(Descripcion)/*Falta la descripcion*/
 
+                        v.context.startActivity(intent) /*otra Activity(Descripcion)*/
+
+
+                    }
+
+                })
+
+
+            }
+
+        })
 
 
     }
 
 
+    fun ImageView.loadUrl(url: String) {
+        Picasso.get().load(url).into(imageView)
+
+    }
+
+
+/*-------------------------------Activity Descripcion------------------------*/
+
+class DescripcionActivity : AppCompatActivity() {
+
+    lateinit var imageSlider: ImageSlider
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_descripcion)
+
+
+        var bundle: Bundle? = intent.extras
+
+        var title: String? = bundle!!.getString("Title") /*obtengo el extra de Title*/
+        var price: String? = bundle.getString("Price")	/*obtengo el extra de Price*/
+        var Image: String? = bundle.getString("Image")  /*obtengo el extra de Image*/
+        var Descripcion: String? = intent.getStringExtra("Descripcion") /*Obtengo el extra de Descripcion que hice una llamada al Api cuando pase por parametro el id -> obtengo la descripcion del producto*/
+
+
+        textViewTitleDescripcion.setText(title)  
+        textViewPriceDescripcion.setText(price)  
+        Picasso.get().load(Image).into(imageViewDescripcion)
+        textViewDescripcion.setText(Descripcion)
+
+
+    }
+
+
+}
+
+
+
+}

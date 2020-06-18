@@ -1,5 +1,6 @@
 package com.example.mercadolibredos.Activities
 
+import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,7 +26,6 @@ class FavoritosActivity : AppCompatActivity() {
     }
 
     fun setUpRecyclerView(){
-
         mRecyclerView = findViewById(R.id.recyclerViewFavoritos)
         mRecyclerView.setHasFixedSize(true)
         mRecyclerView.layoutManager = LinearLayoutManager(this)
