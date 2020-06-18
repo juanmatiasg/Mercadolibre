@@ -19,7 +19,7 @@ import retrofit2.Response
 
 class DescripcionActivity : AppCompatActivity() {
 
-    lateinit var imageSlider: ImageSlider
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

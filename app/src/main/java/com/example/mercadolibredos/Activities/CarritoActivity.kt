@@ -41,8 +41,7 @@ class CarritoActivity : AppCompatActivity() {
 
         textViewTotal.setText("Total: ${sumatoria}$")
         mAdapter.AdapterCarrito(lista,this)
-        mAdapter.notifyDataSetChanged()
-
+        mRecyclerView.adapter =mAdapter
 
     }
 

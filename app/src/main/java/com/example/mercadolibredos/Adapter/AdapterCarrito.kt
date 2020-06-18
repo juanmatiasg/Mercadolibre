@@ -54,11 +54,12 @@ class AdapterCarrito : RecyclerView.Adapter<ViewHolderCarrito>() {
             override fun onClick(v: View) {
                     var totalRestante: Double = 0.0
 
-                    totalRestante -= lista.get(position).price /**/
+                    totalRestante -= lista.get(position).price
 
                     lista.remove(lista.get(position))
 
-                    PrefConfig.wirteListINPref(v.context, lista)/*Guardar lista*/
+                    PrefConfig.wirteListINPref(context, lista)/*Guardar lista*/
+
 
                     holder.itemView.textViewTotal.setText(totalRestante.toString()) /*Cuando elimino el producto lamo al itemView para restar el precio de la lista */
 

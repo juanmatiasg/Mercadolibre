@@ -66,7 +66,7 @@ class ProductosAdapter : RecyclerView.Adapter<ViewHolder>() {
             }
 
         })
-
+        /*Btn Agregar Carrito*/
         holder.btnAgregar.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
                 Toast.makeText(v.context, "Se agrego al Carrito", Toast.LENGTH_SHORT).show()
