@@ -19,8 +19,11 @@ interface MercadoLibreApi {
  @GET("items/{id}")  /*se buscar un solo producto*/
  fun search(@Path("id")id:String):Call<Items>
 
- @GET("sites/MLA/search?q=articulos")  /*Obtiene Todos los Articulos*/
- fun getAll():Call<BaseProductos>
+ /*@GET("sites/MLA/search?q=articulos")  /*Obtiene Todos los Articulos*/
+ fun getAll():Call<BaseProductos>*/
+
+    @GET("sites/MLA/search?q=Cualquier Articulo")  /*Obtiene Todos los Articulos*/
+    fun getAll():Call<BaseProductos>
 
  @GET("sites/MLA/search?q=")  /*Se busca todos los productos*/
  fun searching(@Query("q") q:String):Call<BaseProductos>

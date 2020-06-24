@@ -1,11 +1,16 @@
 package com.example.mercadolibredos.Activities
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.denzcoskun.imageslider.ImageSlider
 import com.denzcoskun.imageslider.models.SlideModel
+import com.example.mercadolibredos.Adapter.AdapterPictures
 import com.example.mercadolibredos.Api.Api
+import com.example.mercadolibredos.Modelo.Descripcion
 import com.example.mercadolibredos.Modelo.Items
 import com.example.mercadolibredos.Modelo.Pictures
 
@@ -19,28 +24,75 @@ import retrofit2.Response
 
 class DescripcionActivity : AppCompatActivity() {
 
+    var mAdapter:AdapterPictures = AdapterPictures()
+    lateinit var mRecyclerView:RecyclerView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_descripcion)
 
-
         var bundle: Bundle? = intent.extras
 
         var title: String? = bundle!!.getString("Title")
         var price: String? = bundle.getString("Price")
-        var Image: String? = bundle.getString("Image")
-        var Descripcion: String? = intent.getStringExtra("Descripcion")
 
 
         textViewTitleDescripcion.setText(title)
         textViewPriceDescripcion.setText(price)
-        Picasso.get().load(Image).into(imageViewDescripcion)
-        textViewDescripcion.setText(Descripcion)
+
+
+        obtenerDescripcion()
+        obtenerPictures()
+
 
 
     }
+
+    fun obtenerDescripcion(){
+        var bundle = intent.extras
+        var id :String? = bundle!!.getString("id")
+        var service = Api.getRetrofit().getAllDescriptions(id!!)
+        service.enqueue(object :Callback<Descripcion>{
+            override fun onFailure(call: Call<Descripcion>, t: Throwable) {
+                Log.i(MainActivity.TAG,"No hay descripcion")
+            }
+
+            override fun onResponse(call: Call<Descripcion>, response: Response<Descripcion>) {
+                var respuesta = response.body() as Descripcion
+                textViewDescripcion.setText(respuesta.plain_text)
+            }
+
+        })
+    }
+
+    fun obtenerPictures(){
+        mRecyclerView = findViewById(R.id.recyclerViewPictures)
+        mRecyclerView.hasFixedSize()
+        mRecyclerView.layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
+
+
+        var bundle: Bundle? = intent.extras
+        var id :String? = bundle!!.getString("id")
+
+        var service = Api.getRetrofit()
+        service.getPictures(id!!).enqueue(object:Callback<Items>{
+            override fun onFailure(call: Call<Items>, t: Throwable) {
+                Log.i(MainActivity.TAG,"No hay Fotos")
+            }
+
+            override fun onResponse(call: Call<Items>, response: Response<Items>) {
+                var respuesta = response.body() as Items
+                var lista:MutableList<Pictures> = respuesta.pictures
+
+                mAdapter.AdapterPictures(this@DescripcionActivity,lista)
+                mRecyclerView.adapter = mAdapter
+            }
+
+        })
+    }
+
+
 
 
 }

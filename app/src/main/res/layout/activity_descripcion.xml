@@ -32,11 +32,11 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_mercadolibreiconaso" />
 
+
     <TextView
         android:id="@+id/textViewTitleDescripcion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:background="@color/colorPrimary"
         android:padding="5dp"
         android:text="Titulo"
@@ -45,7 +45,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewDescripcion">
+        app:layout_constraintTop_toBottomOf="@+id/recyclerViewPictures">
 
     </TextView>
 
@@ -53,7 +53,8 @@
     <TextView
         android:id="@+id/textViewPriceDescripcion"
         android:layout_width="match_parent"
-        android:layout_height="17dp"
+        android:layout_height="45dp"
+        android:background="#D3CC09"
         android:gravity="center"
         android:text="Price"
         android:textColor="#000000"
@@ -61,30 +62,31 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scrollView2"
-        app:layout_constraintVertical_bias="0.228">
+        app:layout_constraintVertical_bias="0.0">
 
     </TextView>
 
-
-    <ImageView
-        android:id="@+id/imageViewDescripcion"
-        android:layout_width="399dp"
-        android:layout_height="96dp"
-        android:layout_marginTop="40dp"
+    <androidx.recyclerview.widget.RecyclerView
+        android:padding="15dp"
+        android:id="@+id/recyclerViewPictures"
+        android:layout_width="match_parent"
+        android:layout_height="170dp"
+        android:background="#D3CC09"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:srcCompat="@android:mipmap/sym_def_app_icon" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+    </androidx.recyclerview.widget.RecyclerView>
 
     <ScrollView
-
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
-        android:layout_height="256dp"
+        android:layout_height="255dp"
         android:background="#DDDBD5"
-        android:padding="9dp"
+        android:padding="20dp"
         android:scrollbarAlwaysDrawVerticalTrack="true"
         android:scrollbarThumbVertical="@drawable/scroll_desc"
         app:layout_constraintEnd_toEndOf="parent"
@@ -96,7 +98,7 @@
         <TextView
             android:id="@+id/textViewDescripcion"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="match_parent"
             android:padding="18dp"
             android:text="Esto es una descripcion del Producto"
             android:textColor="#000000"

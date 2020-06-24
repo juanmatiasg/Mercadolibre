@@ -44,62 +44,42 @@ class AdapterCarrito : RecyclerView.Adapter<ViewHolderCarrito>() {
     }
 
     override fun onBindViewHolder(holder: ViewHolderCarrito, position: Int) {
-        holder.id.setText(lista.get(position).id)
-        holder.title.setText(lista.get(position).title)
-        holder.price.setText(lista.get(position).price.toString())
+        holder.id.setText("ID: " + lista.get(position).id)
+        holder.title.setText("Title: " + lista.get(position).title)
+        holder.price.setText("Precio: " + lista.get(position).price.toString() + "$")
         holder.photos.loadUrl(lista.get(position).thumbnail)
 
-
+        /*---------------------------btnEliminar-------------------------------------------*/
         holder.btnEliminar.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
-                    var totalRestante: Double = 0.0
+                var totalRestante: Double = 0.0
 
-                    totalRestante -= lista.get(position).price
+                totalRestante -= lista.get(position).price
 
-                    lista.remove(lista.get(position))
+                lista.remove(lista.get(position))
 
-                    PrefConfig.wirteListINPref(context, lista)/*Guardar lista*/
+                PrefConfig.wirteListINPref(context, lista)/*Guardar lista*/
 
-
-                    holder.itemView.textViewTotal.setText(totalRestante.toString()) /*Cuando elimino el producto lamo al itemView para restar el precio de la lista */
+                holder.itemView.textViewTotal.setText(totalRestante.toString()) /*Cuando elimino el producto lamo al itemView para restar el precio de la lista */
 
 
             }
 
 
-        }) //btnEliminar = Elimina el item de Carritos*/
+        })
 
-        holder.cardView.setOnClickListener(object : View.OnClickListener {  /*Hago click en el cardView y me lleva a otra activity*/
+        /*--------------------Hago click al item y me lleva a otra Activity-----------------------------*/
+        holder.cardView.setOnClickListener(object :
+            View.OnClickListener {  /*Hago click en el cardView y me lleva a otra activity*/
 
             override fun onClick(v: View) {
 
                 var intent = Intent(v.context, DescripcionActivity::class.java)
                 intent.putExtra("Image", lista.get(position).thumbnail)
                 intent.putExtra("Title", holder.title.text.toString())
-                intent.putExtra("Price", holder.price.text.toString())
-
-
-                /*Mando el llamo a la interfaz del API y paso por parametro el id que necesita para
-                * obtener la descripcion del producto*/
-
-                var service = Api.getRetrofit()
-                service.getAllDescriptions(lista.get(position).id).enqueue(object : Callback<Descripcion> {
-                    override fun onFailure(call: Call<Descripcion>, t: Throwable) {
-                        Log.i(MainActivity.TAG, "No hay datos")
-                    }
-
-                    override fun onResponse(call: Call<Descripcion>, response: Response<Descripcion>) {
-                        var respuesta = response.body() as Descripcion
-                        var lista: ArrayList<Descripcion> = ArrayList()
-                        lista.add(respuesta) /*Funciona Perfecto*/
-
-
-                        intent.putExtra("Descripcion", respuesta.plain_text)
-                        v.context.startActivity(intent) /*otra Activity(Descripcion)*/
-
-                    }
-
-                })
+                intent.putExtra("Price", "Precio: " + holder.price.text.toString() + "$")
+                intent.putExtra("id", lista.get(position).id)
+                v.context.startActivity(intent)
 
 
             }

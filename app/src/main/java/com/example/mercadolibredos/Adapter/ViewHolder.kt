@@ -31,6 +31,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.text.FieldPosition
 import java.util.ArrayList
 
 class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -43,66 +44,6 @@ class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     var check = view.findViewById<CheckBox>(R.id.checkbox)
     var btnAgregar = view.findViewById<Button>(R.id.btnAgregar)
 
-
-
-    fun bind(json: Items, position: Int) {
-
-        id.text = "ID: " + json.id
-        title.text = "Titulo: " + json.title
-        price.text = "Precio: " + json.price.toString() + "$"
-        photos.loadUrl(json.thumbnail)
-
-
-        val sharedPreferences = check.context.getSharedPreferences(check.context.getString(R.string.shared_key), Context.MODE_PRIVATE)
-        check.isChecked = sharedPreferences.getBoolean(json.id, false)
-
-
-        cardView.setOnClickListener(object : View.OnClickListener {  /*Hago click en el cardView y me lleva a otra activity*/
-
-            override fun onClick(v: View) {
-
-
-                var intent = Intent(v.context, DescripcionActivity::class.java)
-                intent.putExtra("Image", json.thumbnail)
-                intent.putExtra("Title", title.text.toString())
-                intent.putExtra("Price", price.text.toString())
-
-
-                /*Mando el llamo a la interfaz del API y paso por parametro el id que necesita para
-                * obtener la descripcion del producto*/
-
-                var service = Api.getRetrofit()
-                service.getAllDescriptions(json.id).enqueue(object : Callback<Descripcion> {
-                    override fun onFailure(call: Call<Descripcion>, t: Throwable) {
-                        Log.i(MainActivity.TAG, "No hay datos")
-                    }
-
-                    override fun onResponse(call: Call<Descripcion>, response: Response<Descripcion>) {
-                        var respuesta = response.body() as Descripcion
-
-                        intent.putExtra("Descripcion", respuesta.plain_text)
-
-
-                        v.context.startActivity(intent) /*otra Activity(Descripcion)*/
-
-
-                    }
-
-                })
-
-
-            }
-
-        })
-
-
-    }
-
-
-    fun ImageView.loadUrl(url: String) {
-        Picasso.get().load(url).into(imageView)
-
-    }
 
 
 }

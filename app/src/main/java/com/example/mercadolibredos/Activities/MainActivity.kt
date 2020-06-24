@@ -65,10 +65,14 @@ class MainActivity : AppCompatActivity() {
         mRecyclerView.setHasFixedSize(true)
         if (baseContext.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
 
-            mRecyclerView.layoutManager = LinearLayoutManager(this) /*Si esta en orientacion Portrait aplica un LinearLayout*/
+            mRecyclerView.layoutManager =
+                LinearLayoutManager(this) /*Si esta en orientacion Portrait aplica un LinearLayout*/
         } else {
 
-            mRecyclerView.layoutManager = GridLayoutManager(this, 2) /*En el caso Contrario aplica El Grid layout con 2 columnas */
+            mRecyclerView.layoutManager = GridLayoutManager(
+                this,
+                2
+            ) /*En el caso Contrario aplica El Grid layout con 2 columnas */
         }
     }
 
@@ -102,16 +106,22 @@ class MainActivity : AppCompatActivity() {
 
 
     fun obtenerTodo() { /*Funciona*/
+        progressBar.visibility = View.VISIBLE
 
         var servicio = Api.getRetrofit()
 
         servicio.getAll().enqueue(object : Callback<BaseProductos> {
             override fun onFailure(call: Call<BaseProductos>, t: Throwable) {
+                progressBar.visibility = View.INVISIBLE
+                imageViewError.visibility = View.VISIBLE
+                textViewError.visibility = View.VISIBLE
                 Toast.makeText(this@MainActivity, "No hay conexion", Toast.LENGTH_SHORT).show()
             }
 
             override fun onResponse(call: Call<BaseProductos>, response: Response<BaseProductos>) {
                 if (response.isSuccessful) {
+
+                    progressBar.visibility = View.INVISIBLE
 
                     var productoRespuesta = response.body() as BaseProductos
                     var lista = productoRespuesta.items
@@ -131,22 +141,35 @@ class MainActivity : AppCompatActivity() {
 
     private fun search(term: String) { /*Funciona*/
         hideKeyboard() /*Oculta el teclado cuando lo busco*/
+        textViewError.visibility = View.INVISIBLE
+        imageViewError.visibility = View.INVISIBLE      /*Setea el imagenError que no sea visible*/
+        recyclerView.visibility =
+            View.INVISIBLE        /*Setea que el recyclerView que no sea visible*/
+        progressBar.visibility = View.VISIBLE
+
+
         var service = Api.getRetrofit()
         service.searching(term).enqueue(object : Callback<BaseProductos> {
             override fun onFailure(call: Call<BaseProductos>, t: Throwable) {
+                progressBar.visibility = View.INVISIBLE
+                imageViewError.visibility = View.VISIBLE
+                textViewError.visibility = View.VISIBLE
+
                 Toast.makeText(this@MainActivity, "No hay conexion", Toast.LENGTH_SHORT).show()
             }
 
             override fun onResponse(call: Call<BaseProductos>, response: Response<BaseProductos>) {
                 if (response.isSuccessful) {
-                    hideKeyboard()
+
+                    progressBar.visibility = View.INVISIBLE
+                    recyclerView.visibility = View.VISIBLE
+
                     var productoRespuesta = response.body() as BaseProductos
                     var lista = productoRespuesta.items
 
                     mAdapter.ProductosAdapter(lista, this@MainActivity)
                     mRecyclerView.adapter = mAdapter
                     buscarPorId(term) /*Llamo al metodo buscar por ID*/
-
                 }
 
 
@@ -183,28 +206,6 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-
-    /* fun pictures(){ /*Funciona Perecto*/
-         var service = Api.getRetrofit()
-         service.getPictures("MLA847644305").enqueue(object :Callback<Items>{
-             override fun onFailure(call: Call<Items>, t: Throwable) {
-                 Log.i(TAG,"No hay fotos ")
-             }
-
-             override fun onResponse(call: Call<Items>, response: Response<Items>) {
-                 var pic = response.body() as Items
-                 var lista:MutableList<Pictures> = pic.pictures
-
-                 for (i in 0..lista.size) {
-                     var p = lista.get(i)
-                     Log.i(TAG, p.url)
-                 }
-             }
-
-         })
-
-
-     }*/
 
     companion object {
         var TAG: String = "POKEDEX"

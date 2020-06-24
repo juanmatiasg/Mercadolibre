@@ -51,33 +51,11 @@ class AdapterFavoritos : RecyclerView.Adapter<ViewHolderFavoritos>() {
             override fun onClick(v: View) {
 
                 var intent = Intent(v.context, DescripcionActivity::class.java)
-                intent.putExtra("Image", lista.get(position).thumbnail)
+
                 intent.putExtra("Title", holder.title.text.toString())
-                intent.putExtra("Price", holder.price.text.toString())
-
-
-                /*Mando el llamo a la interfaz del API y paso por parametro el id que necesita para
-                * obtener la descripcion del producto*/
-
-                var service = Api.getRetrofit()
-                service.getAllDescriptions(lista.get(position).id).enqueue(object : Callback<Descripcion> {
-                    override fun onFailure(call: Call<Descripcion>, t: Throwable) {
-                        Log.i(MainActivity.TAG, "No hay datos")
-                    }
-
-                    override fun onResponse(call: Call<Descripcion>, response: Response<Descripcion>) {
-                        var respuesta = response.body() as Descripcion
-                        var lista: ArrayList<Descripcion> = ArrayList()
-                        lista.add(respuesta) /*Funciona Perfecto*/
-
-
-                        intent.putExtra("Descripcion", respuesta.plain_text)
-                        v.context.startActivity(intent) /*otra Activity(Descripcion)*/
-
-                    }
-
-                })
-
+                intent.putExtra("Price", holder.price.text.toString()+"$")
+                intent.putExtra("id",lista.get(position).id)
+                v.context.startActivity(intent)
 
             }
 

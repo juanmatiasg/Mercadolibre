@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#B8B78A"
     tools:context=".Activities.DescripcionActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -18,6 +18,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
     </androidx.appcompat.widget.Toolbar>
+
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="53dp"
@@ -32,19 +33,17 @@
 
     <TextView
         android:id="@+id/textViewTitleDescripcion"
-        android:layout_width="234dp"
+        android:layout_width="350dp"
         android:layout_height="34dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginTop="24dp"
         android:background="@color/colorPrimary"
         android:padding="5dp"
         android:text="Titulo"
         android:textColor="#000000"
         android:textSize="18dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageViewDescripcion"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageViewDescripcion"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintStart_toEndOf="@+id/constraintLayout"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
     </TextView>
 
@@ -52,54 +51,70 @@
         android:id="@+id/textViewPriceDescripcion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
         android:gravity="center"
         android:text="Price"
         android:textColor="#000000"
         android:textSize="16dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/textViewTitleDescripcion"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="@+id/textViewTitleDescripcion"
         app:layout_constraintTop_toBottomOf="@+id/textViewTitleDescripcion">
 
     </TextView>
 
-
-    <ImageView
-        android:id="@+id/imageViewDescripcion"
-        android:layout_width="399dp"
-        android:layout_height="96dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="200dp"
+        android:layout_height="230dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="24dp"
+        android:background="@color/colorPrimary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:srcCompat="@android:mipmap/sym_def_app_icon" />
+        tools:listitem="@layout/item_productos">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewPictures"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.37">
+
+        </androidx.recyclerview.widget.RecyclerView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ScrollView
+
         android:id="@+id/scrollView2"
-        android:layout_width="match_parent"
-        android:layout_height="130dp"
+        android:layout_width="350dp"
+        android:layout_height="170dp"
         android:layout_margin="20dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginRight="1dp"
+        android:layout_marginTop="8dp"
         android:background="#DDDBD5"
         android:padding="10dp"
-        app:layout_constraintEnd_toEndOf="@+id/textViewTitleDescripcion"
-        app:layout_constraintStart_toStartOf="@+id/imageViewDescripcion"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewDescripcion">
         android:scrollbarThumbVertical="@drawable/scroll_desc"
+        app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/constraintLayout"
+        app:layout_constraintTop_toBottomOf="@+id/textViewPriceDescripcion">
 
 
         <TextView
             android:id="@+id/textViewDescripcion"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="match_parent"
             android:padding="18dp"
             android:text="Esto es una descripcion del Producto"
             android:textColor="#000000"
             android:textSize="15dp"
+
             tools:layout_editor_absoluteX="-16dp"
             tools:layout_editor_absoluteY="305dp" />
 
