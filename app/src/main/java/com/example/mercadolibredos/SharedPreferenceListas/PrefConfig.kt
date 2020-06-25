@@ -1,6 +1,8 @@
 package com.example.mercadolibredos.SharedPreferenceListas
 
+import android.app.Activity
 import android.content.Context
+import android.content.SharedPreferences
 
 import com.example.mercadolibredos.Modelo.Items
 import com.example.mercadolibredos.Modelo.Pictures
@@ -14,7 +16,7 @@ class PrefConfig {
         val LIST_KEY: String = "list_key"
 
         /*Guarda el estado de la Lista*/
-        fun wirteListINPref(context: Context, list: MutableList<Items>) {
+       fun wirteListINPref(context: Context, list: MutableList<Items>) {
             var gson = Gson()
             var jsonString = gson.toJson(list)
 

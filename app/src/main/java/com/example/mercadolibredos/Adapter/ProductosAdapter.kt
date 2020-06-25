@@ -12,6 +12,7 @@ import com.example.mercadolibredos.Activities.DescripcionActivity
 import com.example.mercadolibredos.Modelo.Items
 import com.example.mercadolibredos.SharedPreferenceListas.PrefConfig
 import com.example.mercadolibredos.R
+import com.google.gson.Gson
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_productos.view.*
 
@@ -62,11 +63,11 @@ class ProductosAdapter : RecyclerView.Adapter<ViewHolder>() {
 
         })
 
-        val sharedPreferences = holder.check.context.getSharedPreferences(
+        val prefs = holder.check.context.getSharedPreferences(
             holder.check.context.getString(R.string.shared_key),
             Context.MODE_PRIVATE
         )
-        holder.check.isChecked = sharedPreferences.getBoolean(lista.get(position).id, false)
+        holder.check.isChecked = prefs.getBoolean(lista.get(position).id, false)
 
         holder.check.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
@@ -76,13 +77,16 @@ class ProductosAdapter : RecyclerView.Adapter<ViewHolder>() {
                 val editor = sharedPreferences.edit()
 
                 if (holder.check.isChecked) {/*Si el item esta chqueada , le agregao a Favoritos*/
+
                     listasChequeadas.add(item) /*Funciona*/
                     editor.putBoolean(item.id, true) /*Guarda el checkbox true*/
+
                     PrefConfig.wirteListINPref(context, listasChequeadas) /*Guarda el estado de la lista*/
 
                 } else {
                     listasChequeadas.remove(item)/*Funciona*/
                     editor.putBoolean(item.id, false) /*Guarda el checkbox false*/
+
                     PrefConfig.wirteListINPref(context, listasChequeadas) /*Guarda el estado de la lista */
 
                 }

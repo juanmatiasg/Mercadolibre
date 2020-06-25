@@ -1,30 +1,30 @@
 package com.example.mercadolibredos.Activities
 
-import android.app.Activity
+
 import android.content.Intent
 
 import android.content.res.Configuration
-import android.nfc.Tag
+
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 
 
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.view.inputmethod.InputMethodManager
+
 import android.widget.*
 import androidx.appcompat.widget.Toolbar
+
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mercadolibredos.Adapter.ProductosAdapter
 import com.example.mercadolibredos.Api.Api
-import com.example.mercadolibredos.Interfaces.MercadoLibreApi
+
 import com.example.mercadolibredos.Modelo.BaseProductos
 import com.example.mercadolibredos.Modelo.Items
-import com.example.mercadolibredos.Modelo.Pictures
+
 import com.example.mercadolibredos.R
 import com.example.mercadolibredos.Utils.hideKeyboard
 
@@ -33,8 +33,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity() {
 
@@ -52,12 +50,12 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayShowTitleEnabled(false) /*Sacar el titulo por defecto*/
 
-        searchAction.setOnClickListener { search(searchText.text.toString()) } /*Metodo donde se ejecuta la busqueda  */
+        search("Cualquier Articulo")
+        //searchAction.setOnClickListener { search(searchText.text.toString()) } /*Metodo donde se ejecuta la busqueda  */
         setUpRecyclerView()
-        obtenerTodo()  /*Metodo que obtiene todos los Productoss del API*/
+       // obtenerTodo()  /*Metodo que obtiene todos los Productoss del API*/
 
     }
-
 
     fun setUpRecyclerView() {
 
@@ -105,7 +103,8 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun obtenerTodo() { /*Funciona*/
+   /* private fun obtenerTodo() { /*Funciona*/
+
         progressBar.visibility = View.VISIBLE
 
         var servicio = Api.getRetrofit()
@@ -118,7 +117,10 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this@MainActivity, "No hay conexion", Toast.LENGTH_SHORT).show()
             }
 
-            override fun onResponse(call: Call<BaseProductos>, response: Response<BaseProductos>) {
+            override fun onResponse(
+                call: Call<BaseProductos>,
+                response: Response<BaseProductos>
+            ) {
                 if (response.isSuccessful) {
 
                     progressBar.visibility = View.INVISIBLE
@@ -128,6 +130,7 @@ class MainActivity : AppCompatActivity() {
 
                     mAdapter.ProductosAdapter(lista, this@MainActivity)
                     mRecyclerView.adapter = mAdapter
+
                 }
 
 
@@ -136,50 +139,56 @@ class MainActivity : AppCompatActivity() {
 
         })
 
-    }
+
+    }*/
 
 
     private fun search(term: String) { /*Funciona*/
-        hideKeyboard() /*Oculta el teclado cuando lo busco*/
-        textViewError.visibility = View.INVISIBLE
-        imageViewError.visibility = View.INVISIBLE      /*Setea el imagenError que no sea visible*/
-        recyclerView.visibility =
-            View.INVISIBLE        /*Setea que el recyclerView que no sea visible*/
-        progressBar.visibility = View.VISIBLE
+
+            hideKeyboard() /*Oculta el teclado cuando lo busco*/
+            imageViewError.visibility = View.INVISIBLE      /*Setea el imageError que no sea Visible*/
+            textViewError.visibility = View.INVISIBLE       /*Setea el textViewError que no sea Visible*/
+            recyclerView.visibility = View.INVISIBLE        /*Setea que el recyclerView que no sea visible*/
+            progressBar.visibility = View.VISIBLE          /*Setea el progressbar que sea Visible*/
 
 
-        var service = Api.getRetrofit()
-        service.searching(term).enqueue(object : Callback<BaseProductos> {
-            override fun onFailure(call: Call<BaseProductos>, t: Throwable) {
-                progressBar.visibility = View.INVISIBLE
-                imageViewError.visibility = View.VISIBLE
-                textViewError.visibility = View.VISIBLE
+            var service = Api.getRetrofit()
+            service.searching(term).enqueue(object : Callback<BaseProductos> {
+                override fun onFailure(call: Call<BaseProductos>, t: Throwable) {
+                    progressBar.visibility = View.INVISIBLE    /*Cuando no hay conexion el progressbar desapacee y setea la imageViewError , textViewError*/
+                    imageViewError.visibility = View.VISIBLE
+                    textViewError.visibility = View.VISIBLE
 
-                Toast.makeText(this@MainActivity, "No hay conexion", Toast.LENGTH_SHORT).show()
-            }
+                    Toast.makeText(this@MainActivity, "No hay conexion", Toast.LENGTH_SHORT).show()
+                }
 
-            override fun onResponse(call: Call<BaseProductos>, response: Response<BaseProductos>) {
-                if (response.isSuccessful) {
+                override fun onResponse(
+                    call: Call<BaseProductos>,
+                    response: Response<BaseProductos>
+                ) {
+                    if (response.isSuccessful) {
 
-                    progressBar.visibility = View.INVISIBLE
-                    recyclerView.visibility = View.VISIBLE
+                        progressBar.visibility = View.INVISIBLE
+                        recyclerView.visibility = View.VISIBLE
 
-                    var productoRespuesta = response.body() as BaseProductos
-                    var lista = productoRespuesta.items
+                        var productoRespuesta = response.body() as BaseProductos
+                        var lista = productoRespuesta.items
 
-                    mAdapter.ProductosAdapter(lista, this@MainActivity)
-                    mRecyclerView.adapter = mAdapter
-                    buscarPorId(term) /*Llamo al metodo buscar por ID*/
+                        mAdapter.ProductosAdapter(lista, this@MainActivity)
+                        mRecyclerView.adapter = mAdapter
+                        buscarPorId(term) /*Llamo al metodo buscar por ID*/
+
+                    }
+
+
                 }
 
 
-            }
+            }) /*Primero muestra los resultados que pase por Parametro y depues ejecuto la funcion searchAction*/
 
-
-        })
-
-
-    }
+        searchAction.setOnClickListener { search(searchText.text.toString()) }
+                                        /*search(busco lo que me interesa)*/
+    }                                   /*Cuando abro la app , desaparece el recycle,mensaje de error, carga el progressbar y si fue un exito desparece el progresbar y aparece el recyclerView*/
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu, menu) /*inflar el diseno del menu*/
@@ -196,7 +205,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun obtenerFavoritos() {
+    private fun obtenerFavoritos() {
         var intent = Intent(this, FavoritosActivity::class.java)
         startActivity(intent)
     }

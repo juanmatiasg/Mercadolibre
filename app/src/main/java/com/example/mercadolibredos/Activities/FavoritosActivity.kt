@@ -8,8 +8,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mercadolibredos.Adapter.AdapterFavoritos
 import com.example.mercadolibredos.Adapter.ProductosAdapter
+import com.example.mercadolibredos.Modelo.Items
 import com.example.mercadolibredos.R
 import com.example.mercadolibredos.SharedPreferenceListas.PrefConfig
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_favoritos.*
 import retrofit2.Retrofit
@@ -34,6 +37,8 @@ class FavoritosActivity : AppCompatActivity() {
         mRecyclerView.layoutManager = LinearLayoutManager(this)
 
         var lista = PrefConfig.readListFromPrefs(this) /*LLamo al preference y obtengo los datos*/
+
+
         mAdapter.AdapterFavoritos(lista,this)
         mRecyclerView.adapter=mAdapter
     }

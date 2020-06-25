@@ -34,14 +34,13 @@ class CarritoActivity : AppCompatActivity() {
         var lista = PrefConfig.readListFromPrefs(this) /*LLamo al preference y obtengo los datos*/
 
 
-
         for(i in lista) {
             sumatoria += i.price
         }
 
         textViewTotal.setText("Total: ${sumatoria}$")
         mAdapter.AdapterCarrito(lista,this)
-        mRecyclerView.adapter =mAdapter
+        mRecyclerView.adapter = mAdapter
 
     }
 
