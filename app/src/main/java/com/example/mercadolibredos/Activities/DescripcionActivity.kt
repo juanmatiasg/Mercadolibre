@@ -52,8 +52,7 @@ class DescripcionActivity : AppCompatActivity() {
     fun obtenerDescripcion(){
         var bundle = intent.extras
         var id :String? = bundle!!.getString("id")
-        var service = Api.getRetrofit().getAllDescriptions(id!!)
-        service.enqueue(object :Callback<Descripcion>{
+        Api().getDescriptions(id!!,object :Callback<Descripcion>{
             override fun onFailure(call: Call<Descripcion>, t: Throwable) {
                 Log.i(MainActivity.TAG,"No hay descripcion")
             }
@@ -75,8 +74,7 @@ class DescripcionActivity : AppCompatActivity() {
         var bundle: Bundle? = intent.extras
         var id :String? = bundle!!.getString("id")
 
-        var service = Api.getRetrofit()
-        service.getPictures(id!!).enqueue(object:Callback<Items>{
+        Api().getPictures(id!!,object:Callback<Items>{
             override fun onFailure(call: Call<Items>, t: Throwable) {
                 Log.i(MainActivity.TAG,"No hay Fotos")
             }

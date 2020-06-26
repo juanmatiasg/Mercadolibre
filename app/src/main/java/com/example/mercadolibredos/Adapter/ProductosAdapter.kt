@@ -47,7 +47,7 @@ class ProductosAdapter : RecyclerView.Adapter<ViewHolder>() {
         holder.id.setText("ID: "+lista.get(position).id)
         holder.title.setText("Titulo: "+lista.get(position).title)
         holder.price.setText("Precio: "+lista.get(position).price.toString()+"$")
-        holder.photos.loadUrl(lista.get(position).thumbnail)
+        holder.photos.loadUrl(lista.get(position).thumbnail.replace("http","https"))
         holder.cardView.setOnClickListener(object : View.OnClickListener {  /*Hago click en el cardView y me lleva a otra activity*/
 
             override fun onClick(v: View) {

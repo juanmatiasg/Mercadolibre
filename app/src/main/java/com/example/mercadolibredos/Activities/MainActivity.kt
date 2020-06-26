@@ -1,9 +1,12 @@
 package com.example.mercadolibredos.Activities
 
 
+import android.content.Context
 import android.content.Intent
 
 import android.content.res.Configuration
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -27,6 +30,8 @@ import com.example.mercadolibredos.Modelo.Items
 
 import com.example.mercadolibredos.R
 import com.example.mercadolibredos.Utils.hideKeyboard
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.activity_descripcion.*
 
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -51,9 +56,8 @@ class MainActivity : AppCompatActivity() {
         supportActionBar!!.setDisplayShowTitleEnabled(false) /*Sacar el titulo por defecto*/
 
         search("Cualquier Articulo")
-        //searchAction.setOnClickListener { search(searchText.text.toString()) } /*Metodo donde se ejecuta la busqueda  */
         setUpRecyclerView()
-       // obtenerTodo()  /*Metodo que obtiene todos los Productoss del API*/
+
 
     }
 
@@ -77,8 +81,7 @@ class MainActivity : AppCompatActivity() {
 
     fun buscarPorId(query: String) { /*Funciona*/
         hideKeyboard() /*Oculto el teclado cuando busco por id*/
-        var service = Api.getRetrofit()
-        service.search(query).enqueue(object : Callback<Items> {
+        Api().searchById(query, object : Callback<Items> {
             override fun onFailure(call: Call<Items>, t: Throwable) {
                 Toast.makeText(this@MainActivity, "No hay conexion", Toast.LENGTH_SHORT).show()
             }
@@ -103,63 +106,40 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-   /* private fun obtenerTodo() { /*Funciona*/
-
-        progressBar.visibility = View.VISIBLE
-
-        var servicio = Api.getRetrofit()
-
-        servicio.getAll().enqueue(object : Callback<BaseProductos> {
-            override fun onFailure(call: Call<BaseProductos>, t: Throwable) {
-                progressBar.visibility = View.INVISIBLE
-                imageViewError.visibility = View.VISIBLE
-                textViewError.visibility = View.VISIBLE
-                Toast.makeText(this@MainActivity, "No hay conexion", Toast.LENGTH_SHORT).show()
-            }
-
-            override fun onResponse(
-                call: Call<BaseProductos>,
-                response: Response<BaseProductos>
-            ) {
-                if (response.isSuccessful) {
-
-                    progressBar.visibility = View.INVISIBLE
-
-                    var productoRespuesta = response.body() as BaseProductos
-                    var lista = productoRespuesta.items
-
-                    mAdapter.ProductosAdapter(lista, this@MainActivity)
-                    mRecyclerView.adapter = mAdapter
-
-                }
-
-
-            }
-
-
-        })
-
-
-    }*/
-
-
     private fun search(term: String) { /*Funciona*/
 
+        val cm = this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
+        val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
+
+        if (isConnected) {
+
             hideKeyboard() /*Oculta el teclado cuando lo busco*/
-            imageViewError.visibility = View.INVISIBLE      /*Setea el imageError que no sea Visible*/
-            textViewError.visibility = View.INVISIBLE       /*Setea el textViewError que no sea Visible*/
-            recyclerView.visibility = View.INVISIBLE        /*Setea que el recyclerView que no sea visible*/
-            progressBar.visibility = View.VISIBLE          /*Setea el progressbar que sea Visible*/
+            imageViewError.visibility =
+                View.INVISIBLE      /*Setea el imageError que no sea Visible*/
+            textViewError.visibility =
+                View.INVISIBLE       /*Setea el textViewError que no sea Visible*/
+            recyclerView.visibility =
+                View.INVISIBLE        /*Setea que el recyclerView que no sea visible*/
+            progressBar.visibility =
+                View.VISIBLE          /*Setea el progressbar que sea Visible*/
 
 
-            var service = Api.getRetrofit()
-            service.searching(term).enqueue(object : Callback<BaseProductos> {
-                override fun onFailure(call: Call<BaseProductos>, t: Throwable) {
-                    progressBar.visibility = View.INVISIBLE    /*Cuando no hay conexion el progressbar desapacee y setea la imageViewError , textViewError*/
+           Api().search(term, object :Callback<BaseProductos>{
+               override fun onFailure(call: Call<BaseProductos>, t: Throwable) {
+
+                    progressBar.visibility =
+                        View.INVISIBLE    /*Cuando no hay conexion el progressbar desapacee y setea la imageViewError , textViewError*/
+
                     imageViewError.visibility = View.VISIBLE
                     textViewError.visibility = View.VISIBLE
 
-                    Toast.makeText(this@MainActivity, "No hay conexion", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this@MainActivity,
+                        "Hubo un error de conexion",
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
                 }
 
                 override fun onResponse(
@@ -167,7 +147,6 @@ class MainActivity : AppCompatActivity() {
                     response: Response<BaseProductos>
                 ) {
                     if (response.isSuccessful) {
-
                         progressBar.visibility = View.INVISIBLE
                         recyclerView.visibility = View.VISIBLE
 
@@ -176,7 +155,7 @@ class MainActivity : AppCompatActivity() {
 
                         mAdapter.ProductosAdapter(lista, this@MainActivity)
                         mRecyclerView.adapter = mAdapter
-                        buscarPorId(term) /*Llamo al metodo buscar por ID*/
+                        //buscarPorId(term) /*Llamo al metodo buscar por ID*/
 
                     }
 
@@ -186,8 +165,19 @@ class MainActivity : AppCompatActivity() {
 
             }) /*Primero muestra los resultados que pase por Parametro y depues ejecuto la funcion searchAction*/
 
+
+        } else {
+            recyclerView.visibility = View.INVISIBLE
+            textViewError.visibility = View.INVISIBLE
+            imageViewError.visibility = View.VISIBLE
+            Snackbar.make(
+                recyclerView,
+                "No se pudo conectar, por favor vuelva a intentarlo mas tarde",
+                Snackbar.LENGTH_LONG
+            ).show()
+        }
         searchAction.setOnClickListener { search(searchText.text.toString()) }
-                                        /*search(busco lo que me interesa)*/
+        /*search(busco lo que me interesa)*/
     }                                   /*Cuando abro la app , desaparece el recycle,mensaje de error, carga el progressbar y si fue un exito desparece el progresbar y aparece el recyclerView*/
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -206,12 +196,12 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun obtenerFavoritos() {
-        var intent = Intent(this, FavoritosActivity::class.java)
+        val intent = Intent(this, FavoritosActivity::class.java)
         startActivity(intent)
     }
 
-    fun obtenerCarrito() {
-        var intent = Intent(this, CarritoActivity::class.java)
+    private fun obtenerCarrito() {
+        val intent = Intent(this, CarritoActivity::class.java)
         startActivity(intent)
     }
 

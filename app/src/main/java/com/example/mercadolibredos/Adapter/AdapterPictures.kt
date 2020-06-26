@@ -31,7 +31,7 @@ class AdapterPictures : RecyclerView.Adapter<ViewHolderPictures>() {
 
     override fun onBindViewHolder(holder: ViewHolderPictures, position: Int) {
         val item = images[position]
-        holder.imagesPictures.loadUrl(item.url)
+        holder.imagesPictures.loadUrl(item.url.replace("http","https"))
     }
 
     fun ImageView.loadUrl(url: String) {

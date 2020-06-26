@@ -44,7 +44,7 @@ class AdapterFavoritos : RecyclerView.Adapter<ViewHolderFavoritos>() {
         holder.id.setText(lista.get(position).id)
         holder.title.setText(lista.get(position).title)
         holder.price.setText(lista.get(position).price.toString())
-        holder.photos.loadUrl(lista.get(position).thumbnail)
+        holder.photos.loadUrl(lista.get(position).thumbnail.replace("http","https"))
 
         holder.cardView.setOnClickListener(object : View.OnClickListener {  /*Hago click en el cardView y me lleva a otra activity*/
 

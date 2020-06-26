@@ -47,7 +47,7 @@ class AdapterCarrito : RecyclerView.Adapter<ViewHolderCarrito>() {
         holder.id.setText("ID: " + lista.get(position).id)
         holder.title.setText("Title: " + lista.get(position).title)
         holder.price.setText("Precio: " + lista.get(position).price.toString() + "$")
-        holder.photos.loadUrl(lista.get(position).thumbnail)
+        holder.photos.loadUrl(lista.get(position).thumbnail.replace("http","https"))
 
         /*---------------------------btnEliminar-------------------------------------------*/
         holder.btnEliminar.setOnClickListener(object : View.OnClickListener {
