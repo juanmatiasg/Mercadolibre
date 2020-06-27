@@ -34,6 +34,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_descripcion.*
 
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.view_search.*
 
 import retrofit2.Call
 import retrofit2.Callback
@@ -55,7 +56,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayShowTitleEnabled(false) /*Sacar el titulo por defecto*/
 
-        search("Cualquier Articulo")
+        search("Pc")
         setUpRecyclerView()
 
 
@@ -176,7 +177,8 @@ class MainActivity : AppCompatActivity() {
                 Snackbar.LENGTH_LONG
             ).show()
         }
-        searchAction.setOnClickListener { search(searchText.text.toString()) }
+        execute_search_button.setOnClickListener{search(search_input_text.text.toString())}
+        //searchAction.setOnClickListener { search(searchText.text.toString()) }
         /*search(busco lo que me interesa)*/
     }                                   /*Cuando abro la app , desaparece el recycle,mensaje de error, carga el progressbar y si fue un exito desparece el progresbar y aparece el recyclerView*/
 
