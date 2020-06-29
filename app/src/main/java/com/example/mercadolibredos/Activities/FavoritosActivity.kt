@@ -2,26 +2,23 @@ package com.example.mercadolibredos.Activities
 
 import android.content.Context
 import android.os.Bundle
-import android.widget.ImageView
+
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mercadolibredos.Adapter.AdapterFavoritos
 import com.example.mercadolibredos.Adapter.ProductosAdapter
+
 import com.example.mercadolibredos.Modelo.Items
 import com.example.mercadolibredos.R
-import com.example.mercadolibredos.SharedPreferenceListas.PrefConfig
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.item_favoritos.*
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+
+
 
 class FavoritosActivity : AppCompatActivity() {
     lateinit var mRecyclerView: RecyclerView
     var mAdapter:AdapterFavoritos = AdapterFavoritos()
-    var mAdapterProductosAdapter = ProductosAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,11 +33,18 @@ class FavoritosActivity : AppCompatActivity() {
         mRecyclerView.setHasFixedSize(true)
         mRecyclerView.layoutManager = LinearLayoutManager(this)
 
-        var lista = PrefConfig.readListFromPrefs(this) /*LLamo al preference y obtengo los datos*/
+        /*var prefs = this.getSharedPreferences(this.getString(R.string.shared_key), Context.MODE_PRIVATE)
 
+        var jsonString: String? = prefs.getString(LIST_KEY, "")
 
-        mAdapter.AdapterFavoritos(lista,this)
-        mRecyclerView.adapter=mAdapter
+        val type = object : TypeToken<MutableList<Items>>() {}.type /*Averiguar que es*/
+
+        var gson = Gson()
+
+        var list: MutableList<Items> = gson.fromJson(jsonString, type)
+
+        mAdapter.AdapterFavoritos(list,this)
+        mRecyclerView.adapter=mAdapter*/
     }
 
 

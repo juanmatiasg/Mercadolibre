@@ -16,6 +16,7 @@ import com.example.mercadolibredos.Modelo.Descripcion
 import com.example.mercadolibredos.Modelo.Items
 import com.example.mercadolibredos.R
 import com.example.mercadolibredos.SharedPreferenceListas.PrefConfig
+import com.google.gson.Gson
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_carrito.view.*
 import kotlinx.android.synthetic.main.item_carrito.view.*
@@ -58,7 +59,7 @@ class AdapterCarrito : RecyclerView.Adapter<ViewHolderCarrito>() {
 
                 lista.remove(lista.get(position))
 
-                PrefConfig.wirteListINPref(context, lista)/*Guardar lista*/
+       //         wirteListINPref(lista)/*Guardar lista*/
 
                 holder.itemView.textViewTotal.setText(totalRestante.toString()) /*Cuando elimino el producto lamo al itemView para restar el precio de la lista */
 
@@ -94,6 +95,18 @@ class AdapterCarrito : RecyclerView.Adapter<ViewHolderCarrito>() {
         Picasso.get().load(url).into(imageViewCarrito)
 
     }
+
+    /*fun wirteListINPref(list: MutableList<Items>) {
+        var gson = Gson()
+        var jsonString = gson.toJson(list)
+
+        var prefs = context.getSharedPreferences(context.getString(R.string.shared_key), Context.MODE_PRIVATE)
+
+        var editor = prefs.edit()
+        editor.putString(ProductosAdapter.LIST_KEY, jsonString)
+        editor.apply()
+
+    }*/
 
 
 }

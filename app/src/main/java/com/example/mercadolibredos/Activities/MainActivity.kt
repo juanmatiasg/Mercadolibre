@@ -93,7 +93,7 @@ class MainActivity : AppCompatActivity() {
                     var lista: ArrayList<Items> = ArrayList()
                     lista.add(jsonRespuesta)
 
-                    mAdapter.ProductosAdapter(lista, this@MainActivity)
+                    mAdapter.ProductosAdapter(lista)
                     mRecyclerView.adapter = mAdapter
 
 
@@ -154,7 +154,7 @@ class MainActivity : AppCompatActivity() {
                         var productoRespuesta = response.body() as BaseProductos
                         var lista = productoRespuesta.items
 
-                        mAdapter.ProductosAdapter(lista, this@MainActivity)
+                        mAdapter.ProductosAdapter(lista)
                         mRecyclerView.adapter = mAdapter
                         //buscarPorId(term) /*Llamo al metodo buscar por ID*/
 

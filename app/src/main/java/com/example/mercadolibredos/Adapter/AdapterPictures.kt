@@ -12,12 +12,11 @@ import kotlinx.android.synthetic.main.item_pictures.view.*
 
 class AdapterPictures : RecyclerView.Adapter<ViewHolderPictures>() {
     var images: MutableList<Pictures> = mutableListOf()
-    lateinit var context: Context
 
 
-    fun AdapterPictures(context: Context, images: MutableList<Pictures>) {
+    fun AdapterPictures(images: MutableList<Pictures>) {
         this.images = images
-        this.context = context
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderPictures {

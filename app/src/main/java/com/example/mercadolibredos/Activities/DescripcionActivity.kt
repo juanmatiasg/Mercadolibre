@@ -2,12 +2,10 @@ package com.example.mercadolibredos.Activities
 
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
+
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.denzcoskun.imageslider.ImageSlider
-import com.denzcoskun.imageslider.models.SlideModel
 import com.example.mercadolibredos.Adapter.AdapterPictures
 import com.example.mercadolibredos.Api.Api
 import com.example.mercadolibredos.Modelo.Descripcion
@@ -83,7 +81,7 @@ class DescripcionActivity : AppCompatActivity() {
                 var respuesta = response.body() as Items
                 var lista:MutableList<Pictures> = respuesta.pictures
 
-                mAdapter.AdapterPictures(this@DescripcionActivity,lista)
+                mAdapter.AdapterPictures(lista)
                 mRecyclerView.adapter = mAdapter
             }
 

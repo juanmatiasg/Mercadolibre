@@ -12,7 +12,7 @@ import com.google.gson.reflect.TypeToken
 
 class PrefConfig {
 
-    companion object {
+    /*companion object {
         val LIST_KEY: String = "list_key"
 
         /*Guarda el estado de la Lista*/
@@ -44,5 +44,5 @@ class PrefConfig {
         }
 
 
-    }
+    }*/
 }

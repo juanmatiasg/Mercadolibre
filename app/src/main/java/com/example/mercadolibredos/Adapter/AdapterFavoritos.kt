@@ -24,11 +24,10 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class AdapterFavoritos : RecyclerView.Adapter<ViewHolderFavoritos>() {
     var lista: MutableList<Items> = mutableListOf()
-    lateinit var context: Context
 
-    fun AdapterFavoritos(lista: MutableList<Items>, context: Context) {
+
+    fun AdapterFavoritos(lista: MutableList<Items>) {
         this.lista = lista
-        this.context = context
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderFavoritos {
