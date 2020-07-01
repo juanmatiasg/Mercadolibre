@@ -26,12 +26,11 @@ import com.example.mercadolibredos.Adapter.ProductosAdapter
 import com.example.mercadolibredos.Api.Api
 
 import com.example.mercadolibredos.Modelo.BaseProductos
-import com.example.mercadolibredos.Modelo.Items
 
 import com.example.mercadolibredos.R
 import com.example.mercadolibredos.Utils.hideKeyboard
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_descripcion.*
+import com.google.gson.Gson
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.view_search.*
@@ -41,7 +40,6 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
-
 
     lateinit var mRecyclerView: RecyclerView
     var mAdapter: ProductosAdapter = ProductosAdapter()
@@ -62,7 +60,8 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun setUpRecyclerView() {
+
+    private fun setUpRecyclerView() {
 
         mRecyclerView = findViewById(R.id.recyclerView)
         mRecyclerView.setHasFixedSize(true)
@@ -80,7 +79,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun buscarPorId(query: String) { /*Funciona*/
+    /*fun buscarPorId(query: String) { /*Funciona*/
         hideKeyboard() /*Oculto el teclado cuando busco por id*/
         Api().searchById(query, object : Callback<Items> {
             override fun onFailure(call: Call<Items>, t: Throwable) {
@@ -104,7 +103,7 @@ class MainActivity : AppCompatActivity() {
 
         })
 
-    }
+    }*/
 
 
     private fun search(term: String) { /*Funciona*/
@@ -126,18 +125,18 @@ class MainActivity : AppCompatActivity() {
                 View.VISIBLE          /*Setea el progressbar que sea Visible*/
 
 
-           Api().search(term, object :Callback<BaseProductos>{
-               override fun onFailure(call: Call<BaseProductos>, t: Throwable) {
+            Api().search(term, object : Callback<BaseProductos> {
+                override fun onFailure(call: Call<BaseProductos>, t: Throwable) {
 
                     progressBar.visibility =
-                        View.INVISIBLE    /*Cuando no hay conexion el progressbar desapacee y setea la imageViewError , textViewError*/
+                        View.INVISIBLE
 
                     imageViewError.visibility = View.VISIBLE
                     textViewError.visibility = View.VISIBLE
 
                     Toast.makeText(
                         this@MainActivity,
-                        "Hubo un error de conexion",
+                        ERRORCONNECTION,  /*En tal caso que la busqueda falle por una mala senal, me aparece el mensaje Hubo error de Conexion*/
                         Toast.LENGTH_SHORT
                     )
                         .show()
@@ -151,8 +150,8 @@ class MainActivity : AppCompatActivity() {
                         progressBar.visibility = View.INVISIBLE
                         recyclerView.visibility = View.VISIBLE
 
-                        var productoRespuesta = response.body() as BaseProductos
-                        var lista = productoRespuesta.items
+                        val productoRespuesta = response.body() as BaseProductos
+                        val lista = productoRespuesta.items
 
                         mAdapter.ProductosAdapter(lista)
                         mRecyclerView.adapter = mAdapter
@@ -164,7 +163,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
 
-            }) /*Primero muestra los resultados que pase por Parametro y depues ejecuto la funcion searchAction*/
+            })
 
 
         } else {
@@ -173,14 +172,15 @@ class MainActivity : AppCompatActivity() {
             imageViewError.visibility = View.VISIBLE
             Snackbar.make(
                 recyclerView,
-                "No se pudo conectar, por favor vuelva a intentarlo mas tarde",
+                NO_HAY_CONEXION,
                 Snackbar.LENGTH_LONG
             ).show()
         }
-        execute_search_button.setOnClickListener{search(search_input_text.text.toString())}
-        //searchAction.setOnClickListener { search(searchText.text.toString()) }
+        execute_search_button.setOnClickListener { search(search_input_text.text.toString()) }
+
         /*search(busco lo que me interesa)*/
-    }                                   /*Cuando abro la app , desaparece el recycle,mensaje de error, carga el progressbar y si fue un exito desparece el progresbar y aparece el recyclerView*/
+    }  /*Cuando abro la app , desaparece el recycle,mensaje de error, carga el progressbar
+       y si fue un exito desparece el progresbar y aparece el recyclerView*/
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu, menu) /*inflar el diseno del menu*/
@@ -210,6 +210,10 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         var TAG: String = "POKEDEX"
+        const val NO_HAY_CONEXION = "No se pudo conectar, por favor vuelva a intentarlo mas tarde"
+        const val ERRORCONNECTION = "Hubo un error de conexion"
+        val CURRENT_SEARCH_KEY = "CURRENT_SEARCH_KEY"
+        val CURRENT_SEARCH_TERM = "CURRENT_SEARCH_TERM"
     }
 
 

@@ -13,12 +13,12 @@
 
         <View
             android:id="@+id/open_search_button"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="16dp"
-            android:background="@drawable/ic_search_white_24dp"/>
+            android:background="@mipmap/search_icon"/>
 
     </RelativeLayout>
 
@@ -47,7 +47,8 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_toStartOf="@id/execute_search_button"
-            android:layout_toEndOf="@id/close_search_button" />
+            android:layout_toEndOf="@id/close_search_button"
+            android:imeOptions="flagNoFullscreen"/>
 
         <View
             android:id="@+id/execute_search_button"

@@ -37,15 +37,15 @@ class CarritoActivity : AppCompatActivity() {
         mRecyclerView.layoutManager = LinearLayoutManager(this)
 
 
-       /* var prefs = this.getSharedPreferences(this.getString(R.string.shared_key), Context.MODE_PRIVATE)
+       val prefs = this.getSharedPreferences(this.getString(R.string.shared_key), Context.MODE_PRIVATE)
 
-        var jsonString: String? = prefs.getString(LIST_KEY, "")
+        val jsonString: String? = prefs.getString("list_key", "")
 
-        val type = object : TypeToken<MutableList<Items>>() {}.type /*Averiguar que es*/
+        val type = object : TypeToken<MutableList<Items>>() {}.type
 
-        var gson = Gson()
+        val gson = Gson()
 
-        var lista: MutableList<Items> = gson.fromJson(jsonString, type)
+        val lista: MutableList<Items> = gson.fromJson(jsonString, type)
 
 
 
@@ -54,8 +54,8 @@ class CarritoActivity : AppCompatActivity() {
         }
 
         textViewTotal.setText("Total: ${sumatoria}$")
-        mAdapter.AdapterCarrito(lista,this)
-        mRecyclerView.adapter = mAdapter*/
+        mAdapter.AdapterCarrito(lista)
+        mRecyclerView.adapter = mAdapter
 
     }
 

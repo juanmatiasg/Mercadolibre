@@ -2,6 +2,7 @@ package com.example.mercadolibredos.Activities
 
 import android.content.Context
 import android.os.Bundle
+import android.view.View
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,7 +14,7 @@ import com.example.mercadolibredos.Modelo.Items
 import com.example.mercadolibredos.R
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-
+import kotlinx.android.synthetic.main.item_productos.*
 
 
 class FavoritosActivity : AppCompatActivity() {
@@ -33,18 +34,19 @@ class FavoritosActivity : AppCompatActivity() {
         mRecyclerView.setHasFixedSize(true)
         mRecyclerView.layoutManager = LinearLayoutManager(this)
 
-        /*var prefs = this.getSharedPreferences(this.getString(R.string.shared_key), Context.MODE_PRIVATE)
+        var prefs = this.getSharedPreferences(this.getString(R.string.shared_key), Context.MODE_PRIVATE)
 
-        var jsonString: String? = prefs.getString(LIST_KEY, "")
+        var jsonString: String? = prefs.getString("list_key", "")
 
-        val type = object : TypeToken<MutableList<Items>>() {}.type /*Averiguar que es*/
+        val type = object : TypeToken<MutableList<Items>>() {}.type /**/
 
         var gson = Gson()
 
         var list: MutableList<Items> = gson.fromJson(jsonString, type)
 
-        mAdapter.AdapterFavoritos(list,this)
-        mRecyclerView.adapter=mAdapter*/
+
+        mAdapter.AdapterFavoritos(list)
+        mRecyclerView.adapter=mAdapter
     }
 
 

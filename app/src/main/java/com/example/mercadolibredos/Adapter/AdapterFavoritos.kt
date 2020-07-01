@@ -40,9 +40,9 @@ class AdapterFavoritos : RecyclerView.Adapter<ViewHolderFavoritos>() {
     }
 
     override fun onBindViewHolder(holder: ViewHolderFavoritos, position: Int) {
-        holder.id.setText(lista.get(position).id)
-        holder.title.setText(lista.get(position).title)
-        holder.price.setText(lista.get(position).price.toString())
+        holder.id.setText(ProductosAdapter.ID+lista.get(position).id)
+        holder.title.setText(ProductosAdapter.TITLE+lista.get(position).title)
+        holder.price.setText(ProductosAdapter.PRECIO+lista.get(position).price.toString())
         holder.photos.loadUrl(lista.get(position).thumbnail.replace("http","https"))
 
         holder.cardView.setOnClickListener(object : View.OnClickListener {  /*Hago click en el cardView y me lleva a otra activity*/
@@ -51,9 +51,9 @@ class AdapterFavoritos : RecyclerView.Adapter<ViewHolderFavoritos>() {
 
                 var intent = Intent(v.context, DescripcionActivity::class.java)
 
-                intent.putExtra("Title", holder.title.text.toString())
-                intent.putExtra("Price", holder.price.text.toString()+"$")
-                intent.putExtra("id",lista.get(position).id)
+                intent.putExtra(ProductosAdapter.TITLE, holder.title.text.toString())
+                intent.putExtra(ProductosAdapter.PRECIO, holder.price.text.toString()+"$")
+                intent.putExtra(ProductosAdapter.ID,lista.get(position).id)
                 v.context.startActivity(intent)
 
             }

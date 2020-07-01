@@ -5,8 +5,12 @@ import android.content.Context
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat.getSystemService
+import com.example.mercadolibredos.Modelo.Items
+import com.example.mercadolibredos.R
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
-    fun Activity.hideKeyboard() {
+fun Activity.hideKeyboard() {
         hideKeyboard(currentFocus ?: View(this))
 
     }
@@ -16,3 +20,6 @@ import androidx.core.content.ContextCompat.getSystemService
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
 
     }
+
+
+

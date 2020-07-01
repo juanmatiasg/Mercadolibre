@@ -9,7 +9,7 @@
         android:id="@+id/verCarrito"
         android:icon="@drawable/ic_shopping_cart_black_24dp"
         app:showAsAction="always"
-        android:title="TODO"></item>
+        android:title="Carrito"></item>
 
     <item android:title="Favoritos"
         android:id="@+id/favoritos"

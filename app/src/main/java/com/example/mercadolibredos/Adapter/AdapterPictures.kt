@@ -1,6 +1,5 @@
 package com.example.mercadolibredos.Adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -20,7 +19,7 @@ class AdapterPictures : RecyclerView.Adapter<ViewHolderPictures>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderPictures {
-        var layoutInflater = LayoutInflater.from(parent.context)
+        val layoutInflater = LayoutInflater.from(parent.context)
         return ViewHolderPictures(layoutInflater.inflate(R.layout.item_pictures, parent, false))
     }
 
@@ -33,7 +32,7 @@ class AdapterPictures : RecyclerView.Adapter<ViewHolderPictures>() {
         holder.imagesPictures.loadUrl(item.url.replace("http","https"))
     }
 
-    fun ImageView.loadUrl(url: String) {
+    private fun ImageView.loadUrl(url: String) {
         Picasso.get().load(url).into(imageViewPictures)
     }
 }

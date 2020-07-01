@@ -21,12 +21,12 @@ class Api {
     }
 
     fun search(term:String,callback: Callback<BaseProductos>){
-        getRetrofit().searching(term).enqueue(callback) /*Busco los productos que me interesa*/
+        getRetrofit().search(term).enqueue(callback) /*Busco los productos que me interesa*/
     }
 
-    fun searchById(term:String,callback: Callback<Items>){ /*Busco por id*/
+    /*fun searchById(term:String,callback: Callback<Items>){ /*Busco por id*/
         getRetrofit().search(term).enqueue(callback)
-    }
+    }*/
 
     fun getPictures(id:String,callback: Callback<Items>){
         getRetrofit().getPictures(id).enqueue(callback)

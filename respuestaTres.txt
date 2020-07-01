@@ -1,0 +1,171 @@
+● Como usuario quiero que la aplicación brinde un mensaje apropiado
+cuando intente usarse sin conexión a internet
+
+Primero tengo que pedir permiso en el manifest el estado de la conexion
+
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+2) Creo las variables para verificar si hay conexion o no 
+
+private fun search(term: String) { /*Funciona*/
+
+        val cm = this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
+        val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
+
+        if (isConnected) {
+
+            hideKeyboard() /*Oculta el teclado cuando lo busco*/
+            imageViewError.visibility =
+                View.INVISIBLE      /*Setea el imageError que no sea Visible*/
+            textViewError.visibility =
+                View.INVISIBLE       /*Setea el textViewError que no sea Visible*/
+            recyclerView.visibility =
+                View.INVISIBLE        /*Setea que el recyclerView que no sea visible*/
+            progressBar.visibility =
+                View.VISIBLE          /*Setea el progressbar que sea Visible*/
+
+
+           Api().search(term, object :Callback<BaseProductos>{
+               override fun onFailure(call: Call<BaseProductos>, t: Throwable) {
+
+                    progressBar.visibility =
+                        View.INVISIBLE    /*En tal caso que la busqueda falle, me va aparecer un mensaje que diga hubo error de Conexion
+
+                    imageViewError.visibility = View.VISIBLE
+                    textViewError.visibility = View.VISIBLE
+
+                    Toast.makeText(
+                        this@MainActivity,
+                        ERRORCONNECTION,
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                }
+
+                override fun onResponse(
+                    call: Call<BaseProductos>,
+                    response: Response<BaseProductos>
+                ) {
+                    if (response.isSuccessful) {
+                        progressBar.visibility = View.INVISIBLE
+                        recyclerView.visibility = View.VISIBLE
+
+                        val productoRespuesta = response.body() as BaseProductos
+                        val lista = productoRespuesta.items
+
+                        mAdapter.ProductosAdapter(lista)
+                        mRecyclerView.adapter = mAdapter
+                        //buscarPorId(term) /*Llamo al metodo buscar por ID*/
+
+                    }
+
+
+                }
+
+
+            })
+
+
+        } else {
+            recyclerView.visibility = View.INVISIBLE
+            textViewError.visibility = View.INVISIBLE
+            imageViewError.visibility = View.VISIBLE
+            Snackbar.make(
+                recyclerView,
+                NO_HAY_CONEXION,
+                Snackbar.LENGTH_LONG
+            ).show()
+        }
+        execute_search_button.setOnClickListener{search(search_input_text.text.toString())}
+
+        /*search(busco lo que me interesa)*/
+    }  /*Cuando abro la app , desaparece el recycle,mensaje de error, carga el progressbar
+       y si fue un exito desparece el progresbar y aparece el recyclerView*/
+
+---------------------------------------------------------------------------------------
+	. Como usuario quiero que la aplicación muestre apropiadamente los
+	mensajes de “Cargando” y/o “Hubo un error de conexión” si es que
+	suceden.
+
+
+           Api().search(term, object :Callback<BaseProductos>{
+               override fun onFailure(call: Call<BaseProductos>, t: Throwable) {
+
+                    progressBar.visibility =
+                        View.INVISIBLE    /*En tal caso que la busqueda falle, me va aparecer un mensaje que diga hubo error de Conexion
+
+                    imageViewError.visibility = View.VISIBLE
+                    textViewError.visibility = View.VISIBLE
+
+                    Toast.makeText(
+                        this@MainActivity,
+                        ERRORCONNECTION,
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                }
+
+                override fun onResponse(
+                    call: Call<BaseProductos>,
+                    response: Response<BaseProductos>
+                ) {
+                    if (response.isSuccessful) {
+                        progressBar.visibility = View.INVISIBLE
+                        recyclerView.visibility = View.VISIBLE
+
+                        val productoRespuesta = response.body() as BaseProductos
+                        val lista = productoRespuesta.items
+
+                        mAdapter.ProductosAdapter(lista)
+                        mRecyclerView.adapter = mAdapter
+                        //buscarPorId(term) /*Llamo al metodo buscar por ID*/
+
+                    }
+
+
+------------------------------------------------------------------------------
+
+● Como usuario quiero que la aplicación se vea correctamente tanto en
+forma vertical (portrait) como horizontal (landscape).
+
+Me dirijo al xml en Portrait y creo la Orientacion en Landcape 
+
+----------------------------------------------------------------
+
+Esa linea para que sirve?
+val type = object : TypeToken<MutableList<Items>>() {}.type 
+
+Serialización y deserialización de tipos genéricos
+Cuando llama toJson(obj), Gson llama obj.getClass()para obtener información sobre los campos para serializar. Del mismo modo, normalmente puede pasar MyClass.classobjetos en el fromJson(json, MyClass.class)método. 
+Esto funciona bien si el objeto es un tipo no genérico. 
+Sin embargo, si el objeto es de tipo genérico, la información de tipo genérico se pierde debido a la borradura de tipo Java. Aquí hay un ejemplo que ilustra el punto:
+
+clase  Foo <T> {
+   valor T ;
+}
+
+Gson gson =  nuevo  Gson ();
+Foo < Bar > foo =  nuevo  Foo < Bar > ();
+GSON . a Json (foo); // Puede no serializar foo.value correctamente
+
+GSON . fromJson (json, foo . getClass ()); // No puede deserializar foo.value como Bar
+El código anterior no puede interpretar el valor de tipo barra, porque invoca GSON foo.getClass()para obtener su información de clase, pero este método devuelve una clase cruda, Foo.class. 
+Esto significa que Gson no tiene forma de saber que este es un objeto de tipo Foo<Bar>, y no simplemente simple Foo.
+
+Puede resolver este problema especificando el tipo parametrizado correcto para su tipo genérico. Puedes hacer esto usando la TypeTokenclase.
+
+Tipo fooType =  nueva  TypeToken < Foo < bar > > () {} . getType ();
+GSON . toJson (foo, fooType);
+
+GSON . fromJson (json, fooType);
+El idioma utilizado para obtener en fooTyperealidad define una clase interna local anónima que contiene un método getType()que devuelve el tipo completamente parametrizado.
+
+
+
+
+
+
+
+
