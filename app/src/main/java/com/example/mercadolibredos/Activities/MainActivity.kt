@@ -45,6 +45,10 @@ class MainActivity : AppCompatActivity() {
     var mAdapter: ProductosAdapter = ProductosAdapter()
     lateinit var toolbar: Toolbar
 
+    private var currentSearch: BaseProductos? = null
+    private var currentSearchTerm: String = ""
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,14 +61,49 @@ class MainActivity : AppCompatActivity() {
         search("Pc")
         setUpRecyclerView()
 
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        if (currentSearch != null) {
+            outState.putString(CURRENT_SEARCH_KEY, Gson().toJson(currentSearch))
+        }
+        outState.putString(CURRENT_SEARCH_TERM, currentSearchTerm)
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        if (savedInstanceState.containsKey(CURRENT_SEARCH_KEY)) {
+
+            val currentSearchJson = savedInstanceState.getString(CURRENT_SEARCH_KEY)
+
+            currentSearch = Gson().fromJson(currentSearchJson, BaseProductos::class.java)
+
+            if (currentSearch != null) {
+                setList(currentSearch!!)
+            }
+        }
+        currentSearchTerm = savedInstanceState.getString(CURRENT_SEARCH_TERM, "")
+        search_input_text.setText(currentSearchTerm)
 
     }
+
+    private fun setList(body:BaseProductos){
+        if(body.items.size>0) {
+            mAdapter.lista = body.items
+            mAdapter.notifyDataSetChanged()
+        }
+
+    }
+
+
 
 
     private fun setUpRecyclerView() {
 
         mRecyclerView = findViewById(R.id.recyclerView)
         mRecyclerView.setHasFixedSize(true)
+
         if (baseContext.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
 
             mRecyclerView.layoutManager =
@@ -108,6 +147,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun search(term: String) { /*Funciona*/
 
+        currentSearchTerm = term
+
         val cm = this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
         val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
@@ -125,7 +166,7 @@ class MainActivity : AppCompatActivity() {
                 View.VISIBLE          /*Setea el progressbar que sea Visible*/
 
 
-            Api().search(term, object : Callback<BaseProductos> {
+            Api().search(currentSearchTerm, object : Callback<BaseProductos> {
                 override fun onFailure(call: Call<BaseProductos>, t: Throwable) {
 
                     progressBar.visibility =
@@ -150,12 +191,13 @@ class MainActivity : AppCompatActivity() {
                         progressBar.visibility = View.INVISIBLE
                         recyclerView.visibility = View.VISIBLE
 
-                        val productoRespuesta = response.body() as BaseProductos
-                        val lista = productoRespuesta.items
+                        currentSearch = response.body()
+                        val lista = currentSearch!!.items
+                        //val productoRespuesta = response.body() as BaseProductos
+                       // val lista = productoRespuesta.items
 
                         mAdapter.ProductosAdapter(lista)
                         mRecyclerView.adapter = mAdapter
-                        //buscarPorId(term) /*Llamo al metodo buscar por ID*/
 
                     }
 
@@ -176,7 +218,9 @@ class MainActivity : AppCompatActivity() {
                 Snackbar.LENGTH_LONG
             ).show()
         }
+
         execute_search_button.setOnClickListener { search(search_input_text.text.toString()) }
+
 
         /*search(busco lo que me interesa)*/
     }  /*Cuando abro la app , desaparece el recycle,mensaje de error, carga el progressbar
@@ -214,6 +258,7 @@ class MainActivity : AppCompatActivity() {
         const val ERRORCONNECTION = "Hubo un error de conexion"
         val CURRENT_SEARCH_KEY = "CURRENT_SEARCH_KEY"
         val CURRENT_SEARCH_TERM = "CURRENT_SEARCH_TERM"
+
     }
 
 

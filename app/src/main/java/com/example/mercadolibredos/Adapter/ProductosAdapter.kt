@@ -18,10 +18,10 @@ import kotlinx.android.synthetic.main.item_productos.view.*
 
 class ProductosAdapter : RecyclerView.Adapter<ViewHolder>() {
 
-    private var listaCarritos: MutableList<Items> = mutableListOf()
-    private var listasChequeadas: MutableList<Items> = mutableListOf()
+     var listaCarritos: MutableList<Items> = mutableListOf()
+     var listasChequeadas: MutableList<Items> = mutableListOf()
 
-    private var lista: MutableList<Items> = mutableListOf()
+    var lista: MutableList<Items> = mutableListOf()
 
     fun ProductosAdapter(lista: MutableList<Items>) {
         this.lista = lista
@@ -75,14 +75,17 @@ class ProductosAdapter : RecyclerView.Adapter<ViewHolder>() {
                 )
                 val editor = sharedPreferences.edit()
 
+
                 if (holder.check.isChecked) {/*Si el item esta chqueada , le agregao a Favoritos*/
-                    listasChequeadas.add(lista.get(position))
+                   lista.add(item)
+                  //  listasChequeadas.add(lista.get(position))
                     editor.putBoolean(item.id, true) /*Guarda el checkbox true*/
-                    holder.wirteListINPref(listasChequeadas)/*Guarda el estado de la lista*/
+                    holder.wirteListINPref(lista)/*Guarda el estado de la lista*/
                 } else {
-                    listasChequeadas.remove(lista.get(position))/*Funciona*/
+                   lista.remove(item)
+                    // listasChequeadas.remove(lista.get(position))/*Funciona*/
                     editor.putBoolean(item.id, false) /*Guarda el checkbox false*/
-                    holder.wirteListINPref(listasChequeadas) /*Guarda el estado de la lista */
+                   // holder.wirteListINPref(listasChequeadas) /*Guarda el estado de la lista */
 
                 }
                 editor.apply()
@@ -107,12 +110,21 @@ class ProductosAdapter : RecyclerView.Adapter<ViewHolder>() {
         Picasso.get().load(url).into(imageView)
     }
 
+    fun setListItem(listItem:MutableList<Items>){
+        this.lista = listItem
+    }
+
+
+
     companion object{
         const val ID= "ID: "
         const val TITLE= "Titulo: "
         const val PRECIO ="Precio: "
         const val CARRITO="Se agrego al Carrito"
+        const val LIST_KEY ="list_ley"
     }
+
+
 
 
 }

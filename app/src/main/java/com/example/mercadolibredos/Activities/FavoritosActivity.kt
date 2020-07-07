@@ -34,9 +34,9 @@ class FavoritosActivity : AppCompatActivity() {
         mRecyclerView.setHasFixedSize(true)
         mRecyclerView.layoutManager = LinearLayoutManager(this)
 
-        var prefs = this.getSharedPreferences(this.getString(R.string.shared_key), Context.MODE_PRIVATE)
+        var prefs = this.getSharedPreferences(this.getString(R.string.list_key), Context.MODE_PRIVATE)
 
-        var jsonString: String? = prefs.getString("list_key", "")
+        var jsonString: String? = prefs.getString(ProductosAdapter.LIST_KEY, "")
 
         val type = object : TypeToken<MutableList<Items>>() {}.type /**/
 

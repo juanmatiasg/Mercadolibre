@@ -23,7 +23,6 @@ class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     var btnAgregar = view.findViewById<Button>(R.id.btnAgregar)
 
 
-    val LIST_KEY: String = "list_key"
 
     /*Guarda el estado de la Lista*/
     fun wirteListINPref(list:MutableList<Items>) {
@@ -33,12 +32,12 @@ class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val jsonString = gson.toJson(list)
 
         val prefs = check.context.getSharedPreferences(
-            check.context.getString(R.string.shared_key),
+            check.context.getString(R.string.list_key),
             Context.MODE_PRIVATE
         )
 
         val editor = prefs.edit()
-        editor.putString(LIST_KEY, jsonString)
+        editor.putString(ProductosAdapter.LIST_KEY, jsonString)
         editor.apply()
 
     }
