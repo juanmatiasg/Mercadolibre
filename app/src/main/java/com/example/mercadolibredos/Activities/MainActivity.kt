@@ -10,6 +10,7 @@ import android.net.NetworkInfo
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 
 
 import android.view.Menu
@@ -26,13 +27,17 @@ import com.example.mercadolibredos.Adapter.ProductosAdapter
 import com.example.mercadolibredos.Api.Api
 
 import com.example.mercadolibredos.Modelo.BaseProductos
+import com.example.mercadolibredos.Modelo.Items
 
 import com.example.mercadolibredos.R
 import com.example.mercadolibredos.Utils.hideKeyboard
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.squareup.picasso.Picasso
 
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.item_productos.*
 import kotlinx.android.synthetic.main.view_search.*
 
 import retrofit2.Call
@@ -48,8 +53,6 @@ class MainActivity : AppCompatActivity() {
     private var currentSearch: BaseProductos? = null
     private var currentSearchTerm: String = ""
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -58,51 +61,12 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayShowTitleEnabled(false) /*Sacar el titulo por defecto*/
 
-        search("Pc")
-        setUpRecyclerView()
-
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        if (currentSearch != null) {
-            outState.putString(CURRENT_SEARCH_KEY, Gson().toJson(currentSearch))
-        }
-        outState.putString(CURRENT_SEARCH_TERM, currentSearchTerm)
-        super.onSaveInstanceState(outState)
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        if (savedInstanceState.containsKey(CURRENT_SEARCH_KEY)) {
-
-            val currentSearchJson = savedInstanceState.getString(CURRENT_SEARCH_KEY)
-
-            currentSearch = Gson().fromJson(currentSearchJson, BaseProductos::class.java)
-
-            if (currentSearch != null) {
-                setList(currentSearch!!)
-            }
-        }
-        currentSearchTerm = savedInstanceState.getString(CURRENT_SEARCH_TERM, "")
-        search_input_text.setText(currentSearchTerm)
-
-    }
-
-    private fun setList(body:BaseProductos){
-        if(body.items.size>0) {
-            mAdapter.lista = body.items
-            mAdapter.notifyDataSetChanged()
-        }
-
-    }
-
-
-
-
-    private fun setUpRecyclerView() {
+        execute_search_button.setOnClickListener { search(search_input_text.text.toString()) }
 
         mRecyclerView = findViewById(R.id.recyclerView)
         mRecyclerView.setHasFixedSize(true)
+
+        mRecyclerView.adapter = mAdapter
 
         if (baseContext.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
 
@@ -115,38 +79,47 @@ class MainActivity : AppCompatActivity() {
                 2
             ) /*En el caso Contrario aplica El Grid layout con 2 columnas */
         }
+
     }
 
 
-    /*fun buscarPorId(query: String) { /*Funciona*/
-        hideKeyboard() /*Oculto el teclado cuando busco por id*/
-        Api().searchById(query, object : Callback<Items> {
-            override fun onFailure(call: Call<Items>, t: Throwable) {
-                Toast.makeText(this@MainActivity, "No hay conexion", Toast.LENGTH_SHORT).show()
+    override fun onSaveInstanceState(outState: Bundle) {
+
+        if (currentSearch != null) {
+            outState.putString(CURRENT_SEARCH_KEY, Gson().toJson(currentSearch))
+        }
+        outState.putString(CURRENT_SEARCH_TERM, currentSearchTerm)
+        super.onSaveInstanceState(outState)
+    }
+
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        if (savedInstanceState.containsKey(CURRENT_SEARCH_KEY)) {
+
+            val currentSearchJson = savedInstanceState.getString(CURRENT_SEARCH_KEY)
+            currentSearch = Gson().fromJson(currentSearchJson, BaseProductos::class.java)
+
+            if (currentSearch != null) {
+                setearLista(currentSearch!!)
             }
 
-            override fun onResponse(call: Call<Items>, response: Response<Items>) {
-                if (response.isSuccessful) {
-                    var jsonRespuesta = response.body() as Items
-                    var lista: ArrayList<Items> = ArrayList()
-                    lista.add(jsonRespuesta)
-
-                    mAdapter.ProductosAdapter(lista)
-                    mRecyclerView.adapter = mAdapter
+        }
+        currentSearchTerm = savedInstanceState.getString(CURRENT_SEARCH_TERM, "")
+        search_input_text.setText(currentSearchTerm)
+    }
 
 
-                }
+    private fun setearLista(body: BaseProductos) {
+        if (body.items.size > 0) {
+            mAdapter.lista = body.items
+            mAdapter.notifyDataSetChanged()
+        }
 
-            }
-
-
-        })
-
-    }*/
+    }
 
 
     private fun search(term: String) { /*Funciona*/
-
         currentSearchTerm = term
 
         val cm = this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -166,7 +139,7 @@ class MainActivity : AppCompatActivity() {
                 View.VISIBLE          /*Setea el progressbar que sea Visible*/
 
 
-            Api().search(currentSearchTerm, object : Callback<BaseProductos> {
+            Api().search(term, object : Callback<BaseProductos> {
                 override fun onFailure(call: Call<BaseProductos>, t: Throwable) {
 
                     progressBar.visibility =
@@ -191,13 +164,8 @@ class MainActivity : AppCompatActivity() {
                         progressBar.visibility = View.INVISIBLE
                         recyclerView.visibility = View.VISIBLE
 
-                        currentSearch = response.body()
-                        val lista = currentSearch!!.items
-                        //val productoRespuesta = response.body() as BaseProductos
-                       // val lista = productoRespuesta.items
-
-                        mAdapter.ProductosAdapter(lista)
-                        mRecyclerView.adapter = mAdapter
+                        currentSearch = response.body()!!
+                        setearLista(response.body()!!)
 
                     }
 
@@ -206,7 +174,6 @@ class MainActivity : AppCompatActivity() {
 
 
             })
-
 
         } else {
             recyclerView.visibility = View.INVISIBLE
@@ -219,12 +186,8 @@ class MainActivity : AppCompatActivity() {
             ).show()
         }
 
-        execute_search_button.setOnClickListener { search(search_input_text.text.toString()) }
 
-
-        /*search(busco lo que me interesa)*/
-    }  /*Cuando abro la app , desaparece el recycle,mensaje de error, carga el progressbar
-       y si fue un exito desparece el progresbar y aparece el recyclerView*/
+    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu, menu) /*inflar el diseno del menu*/
@@ -258,7 +221,6 @@ class MainActivity : AppCompatActivity() {
         const val ERRORCONNECTION = "Hubo un error de conexion"
         val CURRENT_SEARCH_KEY = "CURRENT_SEARCH_KEY"
         val CURRENT_SEARCH_TERM = "CURRENT_SEARCH_TERM"
-
     }
 
 

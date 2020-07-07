@@ -110,9 +110,6 @@ class ProductosAdapter : RecyclerView.Adapter<ViewHolder>() {
         Picasso.get().load(url).into(imageView)
     }
 
-    fun setListItem(listItem:MutableList<Items>){
-        this.lista = listItem
-    }
 
 
 
