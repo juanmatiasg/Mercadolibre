@@ -61,6 +61,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayShowTitleEnabled(false) /*Sacar el titulo por defecto*/
 
+
         execute_search_button.setOnClickListener { search(search_input_text.text.toString()) }
 
         mRecyclerView = findViewById(R.id.recyclerView)
@@ -120,6 +121,8 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun search(term: String) { /*Funciona*/
+
+
         currentSearchTerm = term
 
         val cm = this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -127,8 +130,8 @@ class MainActivity : AppCompatActivity() {
         val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
 
         if (isConnected) {
-
             hideKeyboard() /*Oculta el teclado cuando lo busco*/
+
             imageViewError.visibility =
                 View.INVISIBLE      /*Setea el imageError que no sea Visible*/
             textViewError.visibility =
@@ -161,6 +164,7 @@ class MainActivity : AppCompatActivity() {
                     response: Response<BaseProductos>
                 ) {
                     if (response.isSuccessful) {
+
                         progressBar.visibility = View.INVISIBLE
                         recyclerView.visibility = View.VISIBLE
 

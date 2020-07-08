@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".Activities.MainActivity">
 
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -15,8 +16,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/menu">
-    </androidx.appcompat.widget.Toolbar>
+        app:menu="@menu/menu"></androidx.appcompat.widget.Toolbar>
 
     <ScrollView
         android:id="@+id/scrollView4"
@@ -27,13 +27,17 @@
         app:layout_constraintVertical_bias="0.0"
         tools:layout_editor_absoluteX="0dp">
 
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:padding="8dp"
             tools:listitem="@layout/item_productos" />
+
+
     </ScrollView>
+
 
     <ImageView
         android:id="@+id/imageView2"
@@ -59,6 +63,10 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.53" />
 
+
+
+
+
     <ImageView
         android:id="@+id/imageViewError"
         android:layout_width="30dp"
@@ -70,6 +78,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.53"></ImageView>
+
+
+
 
     <TextView
         android:id="@+id/textViewError"
@@ -85,7 +96,9 @@
         app:layout_constraintVertical_bias="0.01999998"></TextView>
 
 
+
     <com.example.mercadolibredos.SearchView
+        android:id="@+id/searchView"
         android:layout_width="220dp"
         android:layout_height="55dp"
         android:layout_marginStart="8dp"
