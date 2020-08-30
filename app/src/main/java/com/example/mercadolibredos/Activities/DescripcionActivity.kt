@@ -79,6 +79,7 @@ class DescripcionActivity : AppCompatActivity() {
 
                 madapter.AdapterPictures(lista)
                 mrecyclerView.adapter = madapter
+
             }
 
         })

@@ -18,6 +18,10 @@ class Items(
     var price:Double,
     @SerializedName("thumbnail")
     var thumbnail:String,
+    @SerializedName("secure_thumbnail")
+    var secure_thumbnail:String,
+    @SerializedName("permalink")
+    var permalink:String,
     @SerializedName("descriptions")
     var descriptions:MutableList<Descripcion>,
     @SerializedName("pictures")

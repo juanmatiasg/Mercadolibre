@@ -11,7 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class Api {
 
     private fun getRetrofit(): MercadoLibreApi {
-        var retrofit = Retrofit.Builder()
+        val retrofit = Retrofit.Builder()
             .baseUrl("https://api.mercadolibre.com/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -19,6 +19,10 @@ class Api {
         return retrofit.create(MercadoLibreApi::class.java)
 
     }
+
+    /*Un conversor de Json nos permite crear objetos apartir de Cadenas de Texto con el formato Json*/
+
+
 
     fun search(term:String,callback: Callback<BaseProductos>){
         getRetrofit().search(term).enqueue(callback) /*Busco los productos que me interesa*/

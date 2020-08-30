@@ -29,11 +29,15 @@ class AdapterPictures : RecyclerView.Adapter<ViewHolderPictures>() {
 
     override fun onBindViewHolder(holder: ViewHolderPictures, position: Int) {
         val item = images[position]
-        holder.imagesPictures.loadUrl(item.url.replace("http","https"))
+        holder.imagesPictures.loadUrl(item.secure_url)
     }
 
     private fun ImageView.loadUrl(url: String) {
-        Picasso.get().load(url).into(imageViewPictures)
+        Picasso.get()
+            .load(url)
+            .placeholder(R.drawable.progress_animation)
+            .error(R.drawable.image_not_found)
+            .into(imageViewPictures)
     }
 }
 

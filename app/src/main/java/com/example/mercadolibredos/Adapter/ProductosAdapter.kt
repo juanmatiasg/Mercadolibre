@@ -23,9 +23,6 @@ class ProductosAdapter : RecyclerView.Adapter<ViewHolder>() {
 
     var lista: MutableList<Items> = mutableListOf()
 
-    fun ProductosAdapter(lista: MutableList<Items>) {
-        this.lista = lista
-    }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -43,7 +40,7 @@ class ProductosAdapter : RecyclerView.Adapter<ViewHolder>() {
         holder.id.setText(ID + lista.get(position).id)
         holder.title.setText(TITLE + lista.get(position).title)
         holder.price.setText(PRECIO + lista.get(position).price.toString() + "$")
-        holder.photos.loadUrl(lista.get(position).thumbnail.replace("http", "https"))
+        holder.photos.loadUrl(lista[position].thumbnail)
         holder.cardView.setOnClickListener(object : View.OnClickListener {  /*Hago click en el cardView y me lleva a otra activity*/
 
             override fun onClick(v: View) {
@@ -107,7 +104,11 @@ class ProductosAdapter : RecyclerView.Adapter<ViewHolder>() {
     }
 
     private fun ImageView.loadUrl(url: String) {
-        Picasso.get().load(url).into(imageView)
+        Picasso.get()
+            .load(url)
+            .placeholder(R.drawable.progress_animation)
+            .error(R.drawable.image_not_found)
+            .into(imageView)
     }
 
 

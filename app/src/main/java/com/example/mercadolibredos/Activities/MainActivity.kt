@@ -10,7 +10,6 @@ import android.net.NetworkInfo
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 
 
 import android.view.Menu
@@ -27,17 +26,15 @@ import com.example.mercadolibredos.Adapter.ProductosAdapter
 import com.example.mercadolibredos.Api.Api
 
 import com.example.mercadolibredos.Modelo.BaseProductos
-import com.example.mercadolibredos.Modelo.Items
 
 import com.example.mercadolibredos.R
 import com.example.mercadolibredos.Utils.hideKeyboard
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import com.squareup.picasso.Picasso
+
 
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.item_productos.*
+
 import kotlinx.android.synthetic.main.view_search.*
 
 import retrofit2.Call
@@ -46,9 +43,9 @@ import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var mRecyclerView: RecyclerView
-    var mAdapter: ProductosAdapter = ProductosAdapter()
-    lateinit var toolbar: Toolbar
+    private lateinit var mRecyclerView: RecyclerView
+    private var mAdapter: ProductosAdapter = ProductosAdapter()
+    private lateinit var toolbar: Toolbar
 
     private var currentSearch: BaseProductos? = null
     private var currentSearchTerm: String = ""
@@ -61,12 +58,10 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayShowTitleEnabled(false) /*Sacar el titulo por defecto*/
 
-
         execute_search_button.setOnClickListener { search(search_input_text.text.toString()) }
 
         mRecyclerView = findViewById(R.id.recyclerView)
         mRecyclerView.setHasFixedSize(true)
-
         mRecyclerView.adapter = mAdapter
 
         if (baseContext.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -119,9 +114,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
     private fun search(term: String) { /*Funciona*/
-
 
         currentSearchTerm = term
 
@@ -131,6 +124,7 @@ class MainActivity : AppCompatActivity() {
 
         if (isConnected) {
             hideKeyboard() /*Oculta el teclado cuando lo busco*/
+
 
             imageViewError.visibility =
                 View.INVISIBLE      /*Setea el imageError que no sea Visible*/
@@ -223,8 +217,8 @@ class MainActivity : AppCompatActivity() {
         var TAG: String = "POKEDEX"
         const val NO_HAY_CONEXION = "No se pudo conectar, por favor vuelva a intentarlo mas tarde"
         const val ERRORCONNECTION = "Hubo un error de conexion"
-        val CURRENT_SEARCH_KEY = "CURRENT_SEARCH_KEY"
-        val CURRENT_SEARCH_TERM = "CURRENT_SEARCH_TERM"
+        const val CURRENT_SEARCH_KEY = "CURRENT_SEARCH_KEY"
+        const val CURRENT_SEARCH_TERM = "CURRENT_SEARCH_TERM"
     }
 
 

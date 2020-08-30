@@ -8,9 +8,7 @@
 
     </style>
 
-    <style name="tema" parent="Theme.MaterialComponents.Light.DarkActionBar">
-        <item name="colorAccent">@color/colorAccent</item>
-    </style>
+
 
 
 
